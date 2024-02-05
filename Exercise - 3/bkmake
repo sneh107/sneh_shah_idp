@@ -1,0 +1,36 @@
+currsrcs = $(wildcard ./*.c)
+c1srcs = $(wildcard ./commonMod1/*.c)
+c2srcs = $(wildcard ./commonMod2/*.c)
+
+curros = $(patsubst ./%.c, build/%.o, $(currsrcs))
+c1os = $(patsubst ./commonMod1/%.c, build/%.o, $(c1srcs))
+c2os = $(patsubst ./commonMod2/%.c, build/%.o, $(c2srcs))
+
+hfiles = $(wildcard ./commonMod1/*.h) $(wildcard ./commonMod2/*.h)
+
+denable = 1
+dflag = 
+
+ifeq ($(denable), 1)
+	dflag += -DDECORATE
+endif
+
+all: out/app
+
+out/app: $(curros) $(c1os) $(c2os)
+	gcc $^ -o $@
+	@echo "-------------------------------"
+	@out/app
+	
+build/%.o: ./%.c $(hfiles)
+	gcc -c $< -o $@ $(dflag)
+	
+build/%.o: ./commonMod1/%.c
+	gcc -c $< -o $@
+	
+build/%.o: ./commonMod2/%.c
+	gcc -c $< -o $@
+	
+clean:
+	rm -rf build/* out/*
+
