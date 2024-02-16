@@ -11,7 +11,7 @@ endif
 all: out/app
 
 out/app: $(ofiles)
-	gcc $^ -o $@ -L../Exercise3/ExtLib -lSample
+	gcc $^ -o $@ -L. -lSample
 	out/app
 
 build/%.o: ./%.c $(hfiles)
