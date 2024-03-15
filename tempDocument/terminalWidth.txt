@@ -1,0 +1,42 @@
+ioctl() stands for "input/output control" and is a system call in Unix-like operating systems. It's used to perform various control operations on devices and files.
+
+In this specific case, ioctl() is being used to retrieve information about the terminal window. Here's a breakdown of the parameters:
+
+STDOUT_FILENO: This is a file descriptor representing the standard output stream, typically set to 1. It's used here to specify the output device, which in this case is the terminal window.
+
+TIOCGWINSZ: This is a macro defined in <sys/ioctl.h>. It stands for "Terminal Input/Output Control Get WINdow SiZe". It's used to request information about the terminal window's size.
+
+&w: This is a pointer to a structure of type winsize. The winsize structure is defined in <sys/ioctl.h> and contains information about the terminal window's size, including the number of rows (ws_row) and columns (ws_col).
+
+#include <stdio.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+
+int main() {
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
+    int terminalWidth = w.ws_col;
+    int terminalHeight = w.ws_row;
+
+    printf("Terminal width: %d\n", terminalWidth);
+    printf("Terminal height: %d\n", terminalHeight);
+
+    return 0;
+}
+
+int terminalWidth = w.ws_col;
+
+    char text[] = "Centered Text";
+    int textWidth = strlen(text);
+
+    int leftPadding = (terminalWidth - textWidth) / 2;
+
+    // Print left padding
+    for (int i = 0; i < leftPadding; i++) {
+        printf(" ");
+    }
+
+    // Print the text
+    printf("%s\n", text);
+
