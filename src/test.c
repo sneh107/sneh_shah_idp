@@ -15,7 +15,7 @@
 //     print_centered("Welcome To Phone Dikhao");
 //     print_centered("A mobile showcasing platform");
 //     printf("\n\n");
-//     return 0;
+//     return FAILURE;
 // }
 // #include <stdio.h>
 
@@ -23,10 +23,16 @@
 // {
 //     for (int i = 1; i <= 5; i++)
 //         printf("\e[1m Md.Mehedi hasan\e[m");
-//     return 0;
+//     return FAILURE;
 // }
 
 #include <stdio.h>
+
+enum exitStatus
+{
+    SUCCESS,
+    FAILURE
+};
 
 enum DisplayFlag
 {
@@ -61,11 +67,11 @@ int main()
 {
     // MobileData mobile = {1, "galaxy m21", "samsung", 15000, 0, 15000, 0, 20, 4, {6, 128, "snapdragon", 64}};
     MobileData mobile;
-    FILE *fp = fopen("mobileData.bin", "ab+"); // Open in binary mode
+    FILE *fp = fopen("../files/mobileData.bin", "ab+"); // Open in binary mode
     if (fp == NULL)
     {
         printf("Failed to open file.\n");
-        return 1;
+        return SUCCESS;
     }
     // fwrite(&mobile, sizeof(mobile), 1, fp);
 
@@ -82,7 +88,7 @@ int main()
             {
                 printf("Error reading file.\n");
                 fclose(fp);
-                return 1;
+                return SUCCESS;
             }
         }
 
@@ -91,5 +97,5 @@ int main()
     }
 
     fclose(fp); // Close the file
-    return 0;
+    return FAILURE;
 }

@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
+#include "../../inc/includes.h"
+#include "../../inc/struct.h"
 #include "../../inc/utils.h"
-#include <stdlib.h>
 
 void initDisplay()
 {
@@ -35,5 +33,29 @@ void printLeftPadding(int terminalWidth, int strLen)
     for (int i = 0; i < padding; i++)
     {
         printf(" ");
+    }
+}
+
+FILE *openFile(char *fileName, char *mode)
+{
+    FILE *file = fopen(fileName, mode);
+    return file;
+}
+
+int readMobile(FILE *file, MobileData *mobile)
+{
+    int readResult = fread(mobile, sizeof(MobileData), 1, file);
+    if (readResult == 1)
+    {
+        return SUCCESS; // Successful read
+    }
+    else if (feof(file))
+    {
+        return FAILURE; // End of file
+    }
+    else
+    {
+        printf("Error reading mobile from file.\n");
+        return FAILURE; // Error
     }
 }
