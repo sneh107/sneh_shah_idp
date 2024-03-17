@@ -76,6 +76,10 @@ int main()
     // fwrite(&mobile, sizeof(mobile), 1, fp);
 
     // Check for end-of-file and read data
+    // printf("%-3s %-20s %-10s %-10s %-10s %-10s %-4s %-8s %-5s %-4s %-7s %-15s %-6s\n",
+    //        "MID", "Name", "BrandName", "Price", "Discount", "FinalPrice", "Flag",
+    //        "Quantity", "Count", "RAM", "Storage", "Chipset", "Camera");
+
     while (!feof(fp))
     {
         if (fread(&mobile, sizeof(MobileData), 1, fp) != 1)
@@ -93,7 +97,8 @@ int main()
         }
 
         // Print the data
-        printf("%d,%s,%s,%f,%f,%f,%d,%d,%d,%d,%d,%s,%d\n", mobile.id, mobile.name, mobile.brandName, mobile.price, mobile.discount, mobile.finalPrice, mobile.displayFlag, mobile.quantity, mobile.count, mobile.config.ram, mobile.config.storage, mobile.config.chipset, mobile.config.camera);
+
+        printf("%d,%s,%s,%.2f,%.2f,%.2f,%d,%d,%d,%d,%d,%s,%d\n", mobile.id, mobile.name, mobile.brandName, mobile.price, mobile.discount, mobile.finalPrice, mobile.displayFlag, mobile.quantity, mobile.count, mobile.config.ram, mobile.config.storage, mobile.config.chipset, mobile.config.camera);
     }
 
     fclose(fp); // Close the file

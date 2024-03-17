@@ -1,5 +1,7 @@
 // Shree Ganeshay Namah!
 
+// gcc main.c common/utils.c addMobile/addMobile.c deleteMobile/deleteMobile.c searchMobile/searchMobile.c editMobile/editMobile.c -o app
+
 #include "../inc/includes.h"
 #include "../inc/struct.h"
 #include "../inc/main.h"
@@ -12,7 +14,7 @@ int main()
     if (!login())
         return FAILURE;
     displayMainMenu();
-    return 0;
+    return FAILURE;
 }
 
 int login()
@@ -29,7 +31,7 @@ int login()
 
         if (!validateCredentials(username, password))
         {
-            printf("\e[31mInvalid credentials. Please try again.\e[m\n");
+            printf("\n\e[31mInvalid credentials. Please try again.\e[m\n");
             loginCount++;
         }
         else
@@ -54,8 +56,8 @@ int displayMainMenu()
 {
     int choice;
 
-    int mainCount = 0;
-    while (mainCount < 3)
+    int mainCount = 1;
+    while (mainCount <= 3)
     {
         system("clear");
         initDisplay();
@@ -86,26 +88,22 @@ int displayMainMenu()
             viewTopSellers();
             break;
         case 6:
-            printf("Exiting Application ...\n");
+            printf("\n\e[1;33mExiting Application ...\e[m\n");
             exit(0);
             break;
         default:
-            printf("Invalid choice. Please try again.\n");
+            if (mainCount == 3)
+            {
+                printf("\n\e[31mToo many attempts\nExiting Application ...\e[m\n");
+                exit(1);
+            }
+            printf("\n\e[31mInvalid choice. Please try again.\e[m\n");
             mainCount++;
             break;
         }
     }
 }
 
-void deleteMobile()
-{
-}
-void editMobile()
-{
-}
-void searchMobile()
-{
-}
 void viewTopSellers()
 {
 }

@@ -73,7 +73,8 @@ int checkIfMobileExists(char *tempMobName)
     FILE *file = openFile("../files/mobileData.bin", "ab+");
     if (file == NULL)
     {
-        printf("Error: Unable to open mobileData.bin file.");
+        printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
+        escape();
         return FAILURE;
     }
 
@@ -83,11 +84,9 @@ int checkIfMobileExists(char *tempMobName)
         if (readResult == 1 && strcmp(mobile.name, tempMobName) == 0)
         {
             fclose(file);
-            printf("Mobile Already Exits!\n");
+            printf("\n\e[31mMobile Already Exits!\e[m\n");
             // sleep(3);
-            printf("Press Enter to continue...");
-            getchar();
-            getchar();
+            escape();
 
             return FAILURE;
         }
@@ -103,7 +102,8 @@ void generateUniqueId(MobileData *mobile)
     FILE *file = openFile("../files/currentId.txt", "a+");
     if (file == NULL)
     {
-        printf("\e[31mError: Unable to open currentId.txt file.\e[m");
+        printf("\n\e[31mError: Unable to open currentId.txt file.\e[m\n");
+        escape();
         return;
     }
     fscanf(file, "%d", &mobile->id);
@@ -121,15 +121,14 @@ int saveToDB(MobileData *mobile)
     FILE *file = openFile("../files/mobileData.bin", "a");
     if (file == NULL)
     {
-        printf("Error: Unable to open mobileData.bin file.");
+        printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
+        escape();
         return FAILURE;
     }
     fwrite(mobile, sizeof(MobileData), 1, file);
     fclose(file);
-    printf("Mobile added successfully!\n");
-    printf("Press Enter to continue...");
-    getchar();
-    getchar();
+    printf("\n\e[32mMobile added successfully!\e[m\n");
+    escape();
     // sleep(2);
     return SUCCESS;
 }

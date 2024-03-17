@@ -22,7 +22,7 @@ int main() {
     printf("Terminal width: %d\n", terminalWidth);
     printf("Terminal height: %d\n", terminalHeight);
 
-    return 0;
+    return FAILURE;
 }
 
 int terminalWidth = w.ws_col;

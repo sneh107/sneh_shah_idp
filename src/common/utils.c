@@ -47,15 +47,95 @@ int readMobile(FILE *file, MobileData *mobile)
     int readResult = fread(mobile, sizeof(MobileData), 1, file);
     if (readResult == 1)
     {
-        return SUCCESS; // Successful read
+        return SUCCESS;
     }
     else if (feof(file))
     {
-        return FAILURE; // End of file
+        return FAILURE;
     }
     else
     {
-        printf("Error reading mobile from file.\n");
-        return FAILURE; // Error
+        printf("\n\e[31mError reading mobile from file.\e[m\n");
+        escape();
+        return FAILURE;
     }
+}
+
+int isIdValid(int *id)
+{
+    printf("Enter the ID of the mobile to delete: ");
+    scanf("%d", id);
+
+    FILE *file = openFile("../files/mobileData.bin", "rb");
+    if (file == NULL)
+    {
+        printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
+        escape();
+        return FAILURE;
+    }
+
+    int idFound = 0;
+    MobileData mobile;
+
+    while (readMobile(file, &mobile))
+    {
+        if (mobile.id == *id)
+        {
+            idFound = 1;
+            break;
+        }
+    }
+
+    fclose(file);
+
+    if (!idFound)
+    {
+        printf("\n\e[31mInvalid ID.\e[m\n");
+        escape();
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
+
+int confirm()
+{
+    char confirmation;
+    printf("Confirm? \e[1;33m(y/n):\e[m ");
+    scanf(" %c", &confirmation);
+
+    if (confirmation == 'n' || confirmation == 'N')
+    {
+
+        printf("\n\e[31mOperation cancelled.\e[m\n");
+        escape();
+        return FAILURE;
+    }
+    else if (confirmation == 'y' || confirmation == 'Y')
+    {
+        return SUCCESS;
+    }
+    else
+    {
+        printf("\n\e[31mInvalid Input!\e[m\n");
+        escape();
+        return FAILURE;
+    }
+}
+
+void printHeader()
+{
+    printf("%-3s %-20s %-10s %-10s %-10s %-10s %-4s %-8s %-5s %-4s %-7s %-15s %-6s\n", "MID", "Name", "BrandName", "Price", "Discount", "FinalPrice", "Flag", "Quantity", "Count", "RAM", "Storage", "Chipset", "Camera");
+}
+
+void printMobileDetails(MobileData mobile)
+{
+    printf("%-3d %-20s %-10s %-10.2f %-10.2f %-10.2f %-4d %-8d %-5d %-4d %-7d %-15s %-6d\n", mobile.id, mobile.name, mobile.brandName, mobile.price, mobile.discount, mobile.finalPrice, mobile.displayFlag, mobile.quantity, mobile.count, mobile.config.ram, mobile.config.storage, mobile.config.chipset, mobile.config.camera);
+}
+
+void escape()
+{
+    printf("\nPress \e[1;33mEnter\e[m to continue...\n");
+    getchar();
+    getchar();
 }
