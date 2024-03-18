@@ -1,21 +1,36 @@
-SDIR = ./src
-ODIR = ./obj
-OUT = ./out
+srcs = $(shell find . -name '*.c' ! -name 'test.c')
+ofs = $(patsubst %.c, obj/%.o, $(notdir $(srcs)))
+dirs = $(shell find ./src -type d ! -name "src")
+finaldirs = $(patsubst %, %/%.c, $(dirs))
 
-CFILES = $(wildcard $(SDIR)/*.c)
-OFILES = $(patsubst $(SDIR)/%.c,$(ODIR)/%.o,$(CFILES))
-EXEFILES = $(patsubst $(SDIR)/%.c,$(OUT)/%,$(CFILES))
+# print:
+# 	@echo "$(srcs)"
+# 	@echo "$(ofs)"
+# 	@echo "$(dirs)"
+# 	@echo "$(finaldirs)"
 
-all: $(OFILES) $(EXEFILES)
+all: out/adminPhoneDikhao
 
-$(ODIR)/%.o: $(SDIR)/%.c
-	@mkdir -p obj out
+out/adminPhoneDikhao: $(ofs)
+	gcc $^ -o $@
+
+obj/%.o: ./src/%.c  ./inc/struct.h  ./inc/main.h ./inc/utils.h
 	gcc -c $< -o $@
 
-$(OUT)/%: $(ODIR)/%.o
-	gcc $< -o $@
+obj/%.o: ./src/addMobile/%.c ./inc/struct.h ./inc/utils.h ./inc/addMobile.h
+	gcc -c $< -o $@
+
+obj/%.o: ./src/deleteMobile/%.c ./inc/struct.h ./inc/utils.h
+	gcc -c $< -o $@
+
+obj/%.o: ./src/searchMobile/%.c ./inc/struct.h ./inc/utils.h ./inc/searchMobile.h
+	gcc -c $< -o $@
+
+obj/%.o: ./src/editMobile/%.c ./inc/struct.h ./inc/utils.h ./inc/searchMobile.h ./inc/editMobile.h
+	gcc -c $< -o $@
+
+obj/%.o: ./src/common/%.c ./inc/struct.h ./inc/utils.h 
+	gcc -c $< -o $@
 	
 clean:
-	rm -rf $(ODIR) $(OUT)
-	
-.PHONY: all clean
+	rm -rf obj/* out/*

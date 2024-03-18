@@ -19,7 +19,7 @@ int editMobile()
     printf("3. Back\n");
     printf("4. Exit\n");
     printf("Enter your choice: ");
-    scanf("%d", &choice);
+    getIntInput(&choice);
 
     switch (choice)
     {
@@ -55,7 +55,7 @@ int editMobile()
 
     int idToEdit;
     printf("Enter the ID of the mobile to edit: ");
-    scanf("%d", &idToEdit);
+    getIntInput(&idToEdit);
 
     if (!performEdit(idToEdit))
     {
@@ -71,7 +71,7 @@ int editMobile()
 int performEdit(int idToEdit)
 {
     int readResult;
-    FILE *file = openFile("../files/mobileData.bin", "rb+");
+    FILE *file = openFile("./files/mobileData.bin", "rb+");
     if (file == NULL)
     {
         printf("\e[31mError: Unable to open mobileData.bin file.\e[m\n");
@@ -130,27 +130,27 @@ int displayEditMenu(MobileData *mobile)
         printf("5. Done\n");
         printf("6. Cancel\n");
         printf("Enter your choice: ");
-        scanf("%d", &choice);
+        getIntInput(&choice);
 
         switch (choice)
         {
         case 1:
             printf("Enter new Price: ");
-            scanf("%f", &mobile->price);
+            getFloatInput(&mobile->price);
             mobile->finalPrice = mobile->price - (mobile->price * (mobile->discount / 100));
             break;
         case 2:
-            printf("Enter new Discount: ");
-            scanf("%f", &mobile->discount);
+            printf("Enter new Discount(in percentage): ");
+            getFloatInput(&mobile->discount);
             mobile->finalPrice = mobile->price - (mobile->price * (mobile->discount / 100));
             break;
         case 3:
-            printf("Enter new Display Flag: ");
-            scanf("%d", (int *)&mobile->displayFlag);
+            printf("Enter new Display Flag (0: New, 1: Refurbished, 2: Outdated, 3: Most Purchased, 4: Out of Stock): ");
+            getIntInput((int *)&mobile->displayFlag);
             break;
         case 4:
             printf("Enter new Quantity: ");
-            scanf("%d", &mobile->quantity);
+            getIntInput(&mobile->quantity);
             break;
         case 5:
             if (!confirm())

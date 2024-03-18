@@ -28,7 +28,7 @@ int displaySearchMenu()
         printf("3. Back\n");
         printf("4. Exit\n");
         printf("Enter your choice: ");
-        scanf("%d", &choice);
+        getIntInput(&choice);
 
         switch (choice)
         {
@@ -44,7 +44,7 @@ int displaySearchMenu()
             return FAILURE;
             break;
         case 4:
-            printf("\n[1;33mExiting Application ...\e[m\n");
+            printf("\n\e[1;33mExiting Application ...\e[m\n");
             exit(0);
             break;
         default:
@@ -70,7 +70,7 @@ int searchByMobileName()
     printf("Enter Mobile Name to search: ");
     scanf(" %[^\n]", mobileName);
 
-    FILE *file = openFile("../files/mobileData.bin", "rb");
+    FILE *file = openFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
@@ -103,7 +103,7 @@ int searchByBrandName()
     printf("Enter Brand Name to search: ");
     scanf(" %[^\n]", brandName);
 
-    FILE *file = openFile("../files/mobileData.bin", "rb");
+    FILE *file = openFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");

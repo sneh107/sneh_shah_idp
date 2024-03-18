@@ -8,6 +8,8 @@ int confirm();
 void printHeader();
 void printMobileDetails(MobileData mobile);
 void escape();
+int getIntInput(int *num);
+int getFloatInput(float *num);
 
 enum exitStatus
 {

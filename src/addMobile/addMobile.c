@@ -16,8 +16,11 @@ int askDetails()
     printf("Enter Mobile Name: ");
     scanf(" %49[^\n]", tempMobName);
 
-    if (!checkIfMobileExists(tempMobName))
+    if (checkIfMobileExists(tempMobName) != SUCCESS)
+    {
+        printf("\n fail");
         return FAILURE;
+    }
 
     generateUniqueId(&mobile);
 
@@ -27,32 +30,36 @@ int askDetails()
     scanf(" %49[^\n]", mobile.brandName);
 
     printf("Enter Price: ");
-    scanf(" %f", &mobile.price);
+    getFloatInput(&mobile.price);
 
-    printf("Enter Discount: ");
-    scanf(" %f", &mobile.discount);
+    printf("Enter Discount(in percentage): ");
+    getFloatInput(&mobile.discount);
 
     mobile.finalPrice = mobile.price - (mobile.price * (mobile.discount / 100));
 
     printf("Enter Display Flag (0: New, 1: Refurbished, 2: Outdated, 3: Most Purchased, 4: Out of Stock): ");
-    scanf(" %d", (int *)&mobile.displayFlag);
+    getIntInput((int *)&mobile.displayFlag);
 
     printf("Enter Quantity: ");
-    scanf(" %d", &mobile.quantity);
+    // scanf(" %d", &mobile.quantity);
+    getIntInput(&mobile.quantity);
 
-    mobile.count = 5;
+    mobile.count = 0;
 
     printf("Enter RAM: ");
-    scanf(" %d", &mobile.config.ram);
+    // scanf(" %d", &mobile.config.ram);
+    getIntInput(&mobile.config.ram);
 
     printf("Enter Storage: ");
-    scanf(" %d", &mobile.config.storage);
+    // scanf(" %d", &mobile.config.storage);
+    getIntInput(&mobile.config.storage);
 
     printf("Enter Chipset: ");
     scanf(" %49[^\n]", mobile.config.chipset);
 
     printf("Enter Camera: ");
-    scanf(" %d", &mobile.config.camera);
+    // scanf(" %d", &mobile.config.camera);
+    getIntInput(&mobile.config.camera);
     // printf("%p", &mobile);
     saveToDB(&mobile);
 
@@ -70,7 +77,7 @@ int checkIfMobileExists(char *tempMobName)
 {
     MobileData mobile;
     int readResult;
-    FILE *file = openFile("../files/mobileData.bin", "ab+");
+    FILE *file = openFile("./files/mobileData.bin", "ab+");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
@@ -99,7 +106,8 @@ int checkIfMobileExists(char *tempMobName)
 void generateUniqueId(MobileData *mobile)
 {
     int tempId;
-    FILE *file = openFile("../files/currentId.txt", "a+");
+    FILE *file = openFile("./files/currentId.txt", "a+");
+    // FILE *file = openFile("/home/sneh/Desktop/_test-PhoneDikhao/files/currentId.txt","a+");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open currentId.txt file.\e[m\n");
@@ -109,7 +117,7 @@ void generateUniqueId(MobileData *mobile)
     fscanf(file, "%d", &mobile->id);
     fclose(file);
 
-    file = openFile("../files/currentId.txt", "w");
+    file = openFile("./files/currentId.txt", "w");
     tempId = mobile->id + 1;
     fprintf(file, "%d", tempId);
     fclose(file);
@@ -118,7 +126,7 @@ void generateUniqueId(MobileData *mobile)
 int saveToDB(MobileData *mobile)
 {
     // printf("%p", &mobile);
-    FILE *file = openFile("../files/mobileData.bin", "a");
+    FILE *file = openFile("./files/mobileData.bin", "a");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");

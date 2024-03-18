@@ -64,9 +64,9 @@ int readMobile(FILE *file, MobileData *mobile)
 int isIdValid(int *id)
 {
     printf("Enter the ID of the mobile to delete: ");
-    scanf("%d", id);
+    getIntInput(id);
 
-    FILE *file = openFile("../files/mobileData.bin", "rb");
+    FILE *file = openFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
@@ -138,4 +138,24 @@ void escape()
     printf("\nPress \e[1;33mEnter\e[m to continue...\n");
     getchar();
     getchar();
+}
+int getIntInput(int *num)
+{
+    while (scanf(" %d", num) != 1)
+    {
+        printf("Invalid input. Enter an integer: ");
+        // Clear the input buffer
+        while (getchar() != '\n')
+            ;
+    }
+}
+int getFloatInput(float *num)
+{
+    while (scanf("%f", num) != 1)
+    {
+        printf("Invalid input. Enter a floating-point number: ");
+        // Clear the input buffer
+        while (getchar() != '\n')
+            ;
+    }
 }

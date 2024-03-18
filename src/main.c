@@ -68,7 +68,7 @@ int displayMainMenu()
         printf("5. View Top Sellers\n");
         printf("6. Exit\n");
         printf("Enter Choice: ");
-        scanf("%d", &choice);
+        getIntInput(&choice);
 
         switch (choice)
         {
@@ -86,6 +86,7 @@ int displayMainMenu()
             break;
         case 5:
             viewTopSellers();
+            // printf("hello");
             break;
         case 6:
             printf("\n\e[1;33mExiting Application ...\e[m\n");
@@ -104,6 +105,27 @@ int displayMainMenu()
     }
 }
 
-void viewTopSellers()
+int viewTopSellers()
 {
+    MobileData mobile;
+    int readResult;
+    FILE *file = openFile("./files/mobileData.bin", "rb");
+    if (file == NULL)
+    {
+        printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
+        escape();
+        return FAILURE;
+    }
+    printHeader();
+    do
+    {
+        readResult = readMobile(file, &mobile);
+        if (readResult == 1 && mobile.displayFlag == 3)
+        {
+            printMobileDetails(mobile);
+        }
+    } while (readResult == 1);
+
+    fclose(file);
+    escape();
 }

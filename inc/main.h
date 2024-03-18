@@ -5,4 +5,4 @@ void addMobile();
 int deleteMobile();
 int editMobile();
 void searchMobile();
-void viewTopSellers();
+int viewTopSellers();
