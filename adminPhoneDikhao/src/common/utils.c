@@ -12,7 +12,8 @@ void initDisplay()
     // system("clear");
     asterisk(terminalWidth);
     printLeftPadding(terminalWidth, 23);
-    printf("\e[1m\e[34mWelcome to Phone-Dikhao\e[m\n");
+    printf("\e[1;34mWelcome to Phone-Dikhao\e[m\n");
+    // printf("\e[1m\e[34mWelcome to Phone-Dikhao\e[m\n");
     printLeftPadding(terminalWidth, 28);
     printf("\e[34mA mobile showcasing platform\e[m\n");
     asterisk(terminalWidth);

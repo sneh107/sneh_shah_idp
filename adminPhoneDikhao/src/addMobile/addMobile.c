@@ -31,35 +31,91 @@ int askDetails()
 
     printf("Enter Price: ");
     getFloatInput(&mobile.price);
+    while (mobile.price <= 0 || mobile.price >= 200000)
+    // if (mobile.price <= 0 || mobile.price >= 200000)
+    {
+        printf("Enter valid price!\n");
+        printf("Enter Price: ");
+        getFloatInput(&mobile.price);
+    }
 
     printf("Enter Discount(in percentage): ");
     getFloatInput(&mobile.discount);
+    while (mobile.discount <= 0)
+    // if (mobile.discount <= 0)
+    {
+        printf("Enter valid Discount!\n");
+        printf("Enter Discount(in percentage): ");
+        getFloatInput(&mobile.discount);
+    }
 
     mobile.finalPrice = mobile.price - (mobile.price * (mobile.discount / 100));
 
-    printf("Enter Display Flag (0: New, 1: Refurbished, 2: Outdated, 3: Most Purchased, 4: Out of Stock): ");
+    printf("Enter Display Flag (0: New, 1: Refurbished): ");
     getIntInput((int *)&mobile.displayFlag);
+    while (mobile.displayFlag != 0 && mobile.displayFlag != 1)
+    // if (mobile.displayFlag != 0 && mobile.displayFlag != 1)
+    {
+        printf("Enter valid display flag!\n");
+        printf("Enter Display Flag (0: New, 1: Refurbished): ");
+        getIntInput((int *)&mobile.displayFlag);
+    }
 
     printf("Enter Quantity: ");
     // scanf(" %d", &mobile.quantity);
     getIntInput(&mobile.quantity);
+    while (mobile.quantity <= 0)
+    // if (mobile.quantity <= 0)
+    {
+        printf("Enter valid Quantity!\n");
+        printf("Enter Quantity: ");
+        getIntInput(&mobile.quantity);
+    }
 
     mobile.count = 0;
 
-    printf("Enter RAM: ");
+    printf("Enter RAM (8,12): ");
     // scanf(" %d", &mobile.config.ram);
     getIntInput(&mobile.config.ram);
+    while (mobile.config.ram != 8 && mobile.config.ram != 12)
+    // if (mobile.config.ram != 8 && mobile.config.ram != 12)
+    {
+        printf("Enter valid RAM!\n");
+        printf("Enter RAM (8,12): ");
+        getIntInput(&mobile.config.ram);
+    }
 
-    printf("Enter Storage: ");
+    printf("Enter Storage (64,128,256): ");
     // scanf(" %d", &mobile.config.storage);
     getIntInput(&mobile.config.storage);
+    while (mobile.config.storage != 64 && mobile.config.storage != 128 && mobile.config.storage != 256)
+    // if (mobile.config.storage != 64 && mobile.config.storage != 128 && mobile.config.storage != 256)
+    {
+        printf("Enter valid storage!\n");
+        printf("Enter Storage (64,128,256): ");
+        getIntInput(&mobile.config.storage);
+    }
 
-    printf("Enter Chipset: ");
+    printf("Enter Chipset (Snapdragon,Mediatec): ");
     scanf(" %49[^\n]", mobile.config.chipset);
+    while (strcasecmp(mobile.config.chipset, "snapdragon") != 0 && strcasecmp(mobile.config.chipset, "Mediatec") != 0)
+    // if (strcasecmp(mobile.config.chipset, "snapdragon") != 0 && strcasecmp(mobile.config.chipset, "Mediatec") != 0)
+    {
+        printf("Enter valid Chipset!\n");
+        printf("Enter Chipset (Snapdragon,Mediatec): ");
+        scanf(" %49[^\n]", mobile.config.chipset);
+    }
 
-    printf("Enter Camera: ");
+    printf("Enter Camera (32,50,64): ");
     // scanf(" %d", &mobile.config.camera);
     getIntInput(&mobile.config.camera);
+    while (mobile.config.camera != 32 && mobile.config.camera != 50 && mobile.config.camera != 64)
+    // if (mobile.config.camera != 32 && mobile.config.camera != 50 && mobile.config.camera != 64)
+    {
+        printf("Enter valid Camera!\n");
+        printf("Enter Camera (32,50,64): ");
+        getIntInput(&mobile.config.camera);
+    }
     // printf("%p", &mobile);
     saveToDB(&mobile);
 

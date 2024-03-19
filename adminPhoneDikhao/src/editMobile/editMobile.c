@@ -137,20 +137,49 @@ int displayEditMenu(MobileData *mobile)
         case 1:
             printf("Enter new Price: ");
             getFloatInput(&mobile->price);
+            while (mobile->price <= 0 || mobile->price >= 200000)
+            // if (mobile.price <= 0 || mobile.price >= 200000)
+            {
+                printf("Enter valid price!\n");
+                printf("Enter Price: ");
+                getFloatInput(&mobile->price);
+            }
+
             mobile->finalPrice = mobile->price - (mobile->price * (mobile->discount / 100));
             break;
         case 2:
             printf("Enter new Discount(in percentage): ");
             getFloatInput(&mobile->discount);
+            while (mobile->discount <= 0)
+            // if (mobile.discount <= 0)
+            {
+                printf("Enter valid Discount!\n");
+                printf("Enter Discount(in percentage): ");
+                getFloatInput(&mobile->discount);
+            }
             mobile->finalPrice = mobile->price - (mobile->price * (mobile->discount / 100));
             break;
         case 3:
-            printf("Enter new Display Flag (0: New, 1: Refurbished, 2: Outdated, 3: Most Purchased, 4: Out of Stock): ");
+            printf("Enter new Display Flag (2: Outdated): ");
             getIntInput((int *)&mobile->displayFlag);
+            while (mobile->displayFlag != 2)
+            // if (mobile.displayFlag != 0 && mobile.displayFlag != 1)
+            {
+                printf("Enter valid display flag!\n");
+                printf("Enter Display Flag (2: Outdated): ");
+                getIntInput((int *)&mobile->displayFlag);
+            }
             break;
         case 4:
             printf("Enter new Quantity: ");
             getIntInput(&mobile->quantity);
+            while (mobile->quantity <= 0)
+            // if (mobile.quantity <= 0)
+            {
+                printf("Enter valid Quantity!\n");
+                printf("Enter Quantity: ");
+                getIntInput(&mobile->quantity);
+            }
             break;
         case 5:
             if (!confirm())

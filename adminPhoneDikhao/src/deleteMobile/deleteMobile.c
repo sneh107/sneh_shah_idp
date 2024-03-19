@@ -15,7 +15,7 @@ int deleteMobile()
         return FAILURE;
     }
 
-    if (!confirm())
+        if (!confirm())
     {
         return FAILURE;
     }

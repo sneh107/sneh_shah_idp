@@ -23,6 +23,7 @@
 // {
 //     for (int i = 1; i <= 5; i++)
 //         printf("\e[1m Md.Mehedi hasan\e[m");
+
 //     return FAILURE;
 // }
 
@@ -67,7 +68,7 @@ int main()
 {
     // MobileData mobile = {1, "galaxy m21", "samsung", 15000, 0, 15000, 0, 20, 4, {6, 128, "snapdragon", 64}};
     MobileData mobile;
-    FILE *fp = fopen("../tempDocument/mobileData.bin", "ab+"); // Open in binary mode
+    FILE *fp = fopen("../files/mobileData.bin", "ab+"); // Open in binary mode
     if (fp == NULL)
     {
         printf("Failed to open file.\n");

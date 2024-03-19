@@ -1,3 +1,6 @@
+#ifndef STRUCT_H
+#define STRUCT_H
+
 enum DisplayFlag
 {
     new,
@@ -27,3 +30,5 @@ typedef struct
         int camera;
     } config;
 } MobileData;
+
+#endif

@@ -1,0 +1,23 @@
+char projectPath[1024];
+char cwd[100];
+if (getcwd(cwd, sizeof(cwd)) == NULL)
+{
+    perror("getcwd() error");
+    return 1;
+}
+
+char *pos = strstr(cwd, "_test-PhoneDikhao");
+if (pos == NULL)
+{
+    printf("Project directory not found in the current path.\n");
+    return 1;
+}
+
+int projectPathLength = pos - cwd + strlen("_test-PhoneDikhao");
+
+// Copy the project path
+strncpy(projectPath, cwd, projectPathLength);
+projectPath[projectPathLength] = '\0';
+
+// Print the part of the path until /home/user/Desktop/_test-PhoneDikhao
+printf("Path till _test-PhoneDikhao: %s\n", projectPath);

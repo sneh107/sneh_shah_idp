@@ -1,3 +1,6 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 void initDisplay();
 void asterisk(int terminalWidth);
 void printLeftPadding(int terminalWidth, int strLen);
@@ -16,3 +19,5 @@ enum exitStatus
     FAILURE,
     SUCCESS
 };
+
+#endif
