@@ -91,6 +91,7 @@ int displayMainMenu()
             break;
         case 6:
             displayAll();
+            break;
         case 7:
             printf("\n\e[1;33mExiting Application ...\e[m\n");
             exit(0);

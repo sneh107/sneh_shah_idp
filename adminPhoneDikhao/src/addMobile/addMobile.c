@@ -18,7 +18,6 @@ int askDetails()
 
     if (checkIfMobileExists(tempMobName) != SUCCESS)
     {
-        printf("\n fail");
         return FAILURE;
     }
 
@@ -144,7 +143,7 @@ int checkIfMobileExists(char *tempMobName)
     do
     {
         readResult = readMobile(file, &mobile);
-        if (readResult == 1 && strcmp(mobile.name, tempMobName) == 0)
+        if (readResult == 1 && strcasecmp(mobile.name, tempMobName) == 0)
         {
             fclose(file);
             printf("\n\e[31mMobile Already Exits!\e[m\n");

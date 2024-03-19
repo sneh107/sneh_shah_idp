@@ -9,7 +9,13 @@ finaldirs = $(patsubst %, %/%.c, $(dirs))
 # 	@echo "$(dirs)"
 # 	@echo "$(finaldirs)"
 
-all: out/adminPhoneDikhao
+all: out obj out/adminPhoneDikhao
+
+obj:
+	mkdir -p obj
+
+out:
+	mkdir -p out
 
 out/adminPhoneDikhao: $(ofs)
 	gcc $^ -o $@
@@ -33,4 +39,6 @@ obj/%.o: ./src/common/%.c ./inc/struct.h ./inc/utils.h
 	gcc -c $< -o $@
 	
 clean:
-	rm -rf obj/* out/*
+	rm -rf obj out
+
+.PHONY: all clean
