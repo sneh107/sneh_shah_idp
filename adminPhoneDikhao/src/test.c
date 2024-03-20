@@ -15,7 +15,7 @@
 //     print_centered("Welcome To Phone Dikhao");
 //     print_centered("A mobile showcasing platform");
 //     printf("\n\n");
-//     return -1;
+//     return FAILURE;
 // }
 // #include <stdio.h>
 
@@ -24,7 +24,7 @@
 //     for (int i = 1; i <= 5; i++)
 //         printf("\e[1m Md.Mehedi hasan\e[m");
 
-//     return -1;
+//     return FAILURE;
 // }
 
 #include <stdio.h>
@@ -62,17 +62,17 @@ typedef struct
         char chipset[50];
         int camera;
     } config;
-} MobileData;
+} MobileData_t;
 
 int main()
 {
-    // MobileData mobile = {1, "galaxy m21", "samsung", 15000, 0, 15000, 0, 20, 4, {6, 128, "snapdragon", 64}};
-    MobileData mobile;
+    // MobileData_t mobile = {1, "galaxy m21", "samsung", 15000, 0, 15000, 0, 20, 4, {6, 128, "snapdragon", 64}};
+    MobileData_t mobile;
     FILE *fp = fopen("../files/mobileData.bin", "ab+"); // Open in binary mode
     if (fp == NULL)
     {
         printf("Failed to open file.\n");
-        return -1;
+        return FAILURE;
     }
     // fwrite(&mobile, sizeof(mobile), 1, fp);
 
@@ -83,7 +83,7 @@ int main()
 
     while (!feof(fp))
     {
-        if (fread(&mobile, sizeof(MobileData), 1, fp) != 1)
+        if (fread(&mobile, sizeof(MobileData_t), 1, fp) != 1)
         {
             if (feof(fp))
             {
@@ -93,7 +93,7 @@ int main()
             {
                 printf("Error reading file.\n");
                 fclose(fp);
-                return -1;
+                return FAILURE;
             }
         }
 
@@ -103,5 +103,5 @@ int main()
     }
 
     fclose(fp); // Close the file
-    return -1;
+    return FAILURE;
 }

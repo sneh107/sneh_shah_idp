@@ -35,6 +35,6 @@ typedef struct
         char chipset[50];
         int camera;
     } config;
-} MobileData;
+} MobileData_t;
 
 #endif

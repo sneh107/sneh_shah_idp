@@ -1,48 +1,47 @@
-#include "../../inc/includes.h"
+// #include "../../inc/includes.h"
 #include "../../inc/common/utils.h"
-void displayOutdatedMobiles();
-int isIdValid(int *id);
+#include "../../inc/deleteMobile/deleteMobile.h"
 
-int deleteMobile()
+int DeleteMobile()
 {
-    displayOutdatedMobiles();
+    DisplayOutdatedMobiles();
 
     int idToDelete;
     // printf("Enter the ID of the mobile to delete: ");
     // scanf("%d", &idToDelete);
-    if (isIdValid(&idToDelete) == -1)
+    if (IsIdValid(&idToDelete) == -1)
     {
-        return -1;
+        return FAILURE;
     }
 
-    if (confirm() == -1)
+    if (Confirm() == -1)
     {
-        return -1;
+        return FAILURE;
     }
 
-    FILE *file = openFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
-        escape();
-        return -1;
+        Escape();
+        return FAILURE;
     }
 
-    FILE *tempFile = openFile("./files/tempMobileData.bin", "wb");
+    FILE *tempFile = OpenFile("./files/tempmobileData.bin", "wb");
     if (tempFile == NULL)
     {
-        printf("\n\e[31mError: Unable to open tempMobileData.bin file.\e[m\n");
-        escape();
+        printf("\n\e[31mError: Unable to open tempmobileData.bin file.\e[m\n");
+        Escape();
         fclose(file);
-        return -1;
+        return FAILURE;
     }
 
-    MobileData mobile;
-    while (readMobile(file, &mobile) == 1)
+    MobileData_t mobile;
+    while (ReadMobile(file, &mobile) == 1)
     {
         if (mobile.id != idToDelete)
         {
-            fwrite(&mobile, sizeof(MobileData), 1, tempFile);
+            fwrite(&mobile, sizeof(MobileData_t), 1, tempFile);
         }
     }
 
@@ -50,58 +49,58 @@ int deleteMobile()
     fclose(tempFile);
 
     remove("./files/mobileData.bin");
-    rename("./files/tempMobileData.bin", "./files/mobileData.bin");
+    rename("./files/tempmobileData.bin", "./files/mobileData.bin");
 
     printf("\n\e[32mMobile record with ID %d deleted successfully.\e[m\n", idToDelete);
-    escape();
+    Escape1();
 }
 
-void displayOutdatedMobiles()
+void DisplayOutdatedMobiles()
 {
-    MobileData mobile;
+    MobileData_t mobile;
     int readResult;
-    FILE *file = openFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
-        escape();
+        Escape();
         return;
     }
     printf("\n");
-    printHeader();
+    PrintHeader();
     do
     {
-        readResult = readMobile(file, &mobile);
+        readResult = ReadMobile(file, &mobile);
         if (readResult == 1 && mobile.displayFlag == 2)
         {
-            printMobileDetails(mobile);
+            PrintMobileDetails(mobile);
         }
     } while (readResult == 1);
     printf("\n");
 
     fclose(file);
-    // escape();
+    // Escape();
 }
 
-int isIdValid(int *id)
+int IsIdValid(int *id)
 {
     printf("Enter the ID of the mobile to delete: ");
-    getIntInput(id);
+    GetIntInput(id);
     // getchar();
 
-    FILE *file = openFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
-        escape();
-        return -1;
+        Escape();
+        return FAILURE;
     }
 
     // printf("demo");
     int idFound;
-    MobileData mobile;
+    MobileData_t mobile;
 
-    while (readMobile(file, &mobile) == 1)
+    while (ReadMobile(file, &mobile) == 1)
     {
         if (mobile.id == *id && mobile.displayFlag == 2)
         {
@@ -116,10 +115,10 @@ int isIdValid(int *id)
     {
         printf("\n\e[31mInvalid ID.\e[m\n");
         // getchar();
-        // escape();
-        escape();
-        return -1;
+        // Escape();
+        Escape();
+        return FAILURE;
     }
 
-    return 0;
+    return SUCCESS;
 }

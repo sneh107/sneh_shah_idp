@@ -2,33 +2,37 @@
 
 // gcc main.c common/utils.c addMobile/addMobile.c deleteMobile/deleteMobile.c searchMobile/searchMobile.c editMobile/editMobile.c -o app
 
-#include "../inc/includes.h"
+// #include "../inc/includes.h"
 #include "../inc/main.h"
 #include "../inc/common/utils.h"
+#include "../inc/addMobile/addMobile.h"
+#include "../inc/deleteMobile/deleteMobile.h"
+#include "../inc/editMobile/editMobile.h"
+#include "../inc/searchMobile/searchMobile.h"
 
 int main()
 {
     system("clear");
-    initDisplay();
-    if (login() == -1)
-        return -1;
-    displayMainMenu();
-    return 0;
+    InitDisplay();
+    if (Login() == -1)
+        return FAILURE;
+    DisplayMainMenu();
+    return SUCCESS;
 }
 
-int login()
+int Login()
 {
-    char username[20];
-    char password[20];
+    char username[50];
+    char password[50];
     int loginCount = 0;
     while (loginCount < 3)
     {
         printf("Enter Admin Username: ");
-        scanf(" %[^\n]s", username);
+        scanf(" %49[^\n]s", username);
         printf("Enter Admin Password: ");
-        scanf(" %[^\n]s", password);
+        scanf(" %49[^\n]s", password);
 
-        if (validateCredentials(username, password) == -1)
+        if (ValidateCredentials(username, password) == -1)
         {
             printf("\n\e[31mInvalid credentials. Please try again.\e[m\n");
             loginCount++;
@@ -37,21 +41,21 @@ int login()
         {
             printf("\n\e[1;32mLogin Successful!\e[m\n");
             sleep(1);
-            return 0;
+            return SUCCESS;
         }
     }
     printf("\n\e[31mToo many attempts\nExiting Application ...\e[m\n");
-    return -1;
+    return FAILURE;
 }
-int validateCredentials(char *username, char *password)
+int ValidateCredentials(char *username, char *password)
 {
     if (strcmp(username, "admin") == 0 && strcmp(password, "admin") == 0)
-        return 0;
+        return SUCCESS;
     else
-        return -1;
+        return FAILURE;
 }
 
-int displayMainMenu()
+void DisplayMainMenu()
 {
     int choice;
 
@@ -59,7 +63,7 @@ int displayMainMenu()
     while (mainCount <= 3)
     {
         system("clear");
-        initDisplay();
+        InitDisplay();
         printf("1. Add Mobile\n");
         printf("2. Delete Mobile\n");
         printf("3. Edit Mobile\n");
@@ -68,28 +72,28 @@ int displayMainMenu()
         printf("6. View all\n");
         printf("7. Exit\n");
         printf("Enter Choice: ");
-        getIntInput(&choice);
+        GetIntInput(&choice);
 
         switch (choice)
         {
         case 1:
-            addMobile();
+            AddMobile();
             break;
         case 2:
-            deleteMobile();
+            DeleteMobile();
             break;
         case 3:
-            editMobile();
+            EditMobile();
             break;
         case 4:
-            searchMobile();
+            SearchMobile();
             break;
         case 5:
-            viewTopSellers();
+            ViewTopSellers();
             // printf("hello");
             break;
         case 6:
-            displayAll();
+            DisplayAll();
             break;
         case 7:
             printf("\n\e[1;33mExiting Application ...\e[m\n");
@@ -102,60 +106,62 @@ int displayMainMenu()
                 exit(1);
             }
             printf("\n\e[31mInvalid choice. Please try again.\e[m\n");
-            escape();
+            Escape();
             mainCount++;
             break;
         }
     }
 }
 
-int viewTopSellers()
+int ViewTopSellers()
 {
-    MobileData mobile;
+    MobileData_t mobile;
     int readResult;
-    FILE *file = openFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
-        escape();
-        return -1;
+        Escape();
+        return FAILURE;
     }
-    printHeader();
+    PrintHeader();
     do
     {
-        readResult = readMobile(file, &mobile);
+        readResult = ReadMobile(file, &mobile);
         if (readResult == 1 && mobile.displayFlag == 3)
         {
-            printMobileDetails(mobile);
+            PrintMobileDetails(mobile);
         }
     } while (readResult == 1);
 
     fclose(file);
-    escape();
+    Escape();
+    return SUCCESS;
 }
 
-int displayAll()
+int DisplayAll()
 {
-    MobileData mobile;
+    MobileData_t mobile;
     int readResult;
-    FILE *file = openFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
-        escape();
-        return -1;
+        Escape();
+        return FAILURE;
     }
     printf("\n");
-    printHeader();
+    PrintHeader();
     do
     {
-        readResult = readMobile(file, &mobile);
+        readResult = ReadMobile(file, &mobile);
         if (readResult == 1)
         {
-            printMobileDetails(mobile);
+            PrintMobileDetails(mobile);
         }
     } while (readResult == 1);
 
     fclose(file);
-    escape();
+    Escape();
+    return SUCCESS;
 }

@@ -1,22 +1,25 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-void initDisplay();
-void asterisk(int terminalWidth);
-void printLeftPadding(int terminalWidth, int strLen);
-FILE *openFile(char *fileName, char *mode);
-int readMobile(FILE *file, MobileData *mobile);
-int confirm();
-void printHeader();
-void printMobileDetails(MobileData mobile);
-void escape();
-int getIntInput(int *num);
-int getFloatInput(float *num);
+#include "../includes.h"
 
-enum exitStatus
+typedef enum
 {
-    FAILURE,
+    FAILURE = -1,
     SUCCESS
-};
+} exitStatus_e;
+
+void InitDisplay();
+void PrintAsterisk(int terminalWidth);
+void PrintLeftPadding(int terminalWidth, int strLen);
+FILE *OpenFile(char *fileName, char *mode);
+int ReadMobile(FILE *file, MobileData_t *mobile);
+int Confirm();
+void PrintHeader();
+void PrintMobileDetails(MobileData_t mobile);
+void Escape();
+void Escape1();
+int GetIntInput(int *num);
+int GetFloatInput(float *num);
 
 #endif

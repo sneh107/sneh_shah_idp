@@ -12,6 +12,6 @@
 
 to use 
 
-printf("\e[1mMd.Mehedi hasan\e[m");
+printf("\e[31mSneh Shah\e[m");
 
 \e for escape
