@@ -1,7 +1,6 @@
 #include "../../inc/includes.h"
-#include "../../inc/struct.h"
-#include "../../inc/addMobile.h"
-#include "../../inc/utils.h"
+#include "../../inc/addMobile/addMobile.h"
+#include "../../inc/common/utils.h"
 
 void addMobile()
 {
@@ -16,9 +15,9 @@ int askDetails()
     printf("Enter Mobile Name: ");
     scanf(" %49[^\n]", tempMobName);
 
-    if (checkIfMobileExists(tempMobName) != SUCCESS)
+    if (checkIfMobileExists(tempMobName) != 0)
     {
-        return FAILURE;
+        return -1;
     }
 
     generateUniqueId(&mobile);
@@ -122,7 +121,7 @@ int askDetails()
     // if (file == NULL)
     // {
     //     printf("Error: Unable to open mobileData.bin file.");
-    //     return FAILURE;
+    //     return -1;
     // }
     // fwrite(&mobile, sizeof(mobile), 1, file);
     // fclose(file);
@@ -137,7 +136,7 @@ int checkIfMobileExists(char *tempMobName)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
 
     do
@@ -150,12 +149,12 @@ int checkIfMobileExists(char *tempMobName)
             // sleep(3);
             escape();
 
-            return FAILURE;
+            return -1;
         }
     } while (readResult == 1);
 
     fclose(file);
-    return SUCCESS;
+    return 0;
 }
 
 void generateUniqueId(MobileData *mobile)
@@ -186,12 +185,12 @@ int saveToDB(MobileData *mobile)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
     fwrite(mobile, sizeof(MobileData), 1, file);
     fclose(file);
     printf("\n\e[32mMobile added successfully!\e[m\n");
     escape();
     // sleep(2);
-    return SUCCESS;
+    return 0;
 }

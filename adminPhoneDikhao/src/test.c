@@ -15,7 +15,7 @@
 //     print_centered("Welcome To Phone Dikhao");
 //     print_centered("A mobile showcasing platform");
 //     printf("\n\n");
-//     return FAILURE;
+//     return -1;
 // }
 // #include <stdio.h>
 
@@ -24,7 +24,7 @@
 //     for (int i = 1; i <= 5; i++)
 //         printf("\e[1m Md.Mehedi hasan\e[m");
 
-//     return FAILURE;
+//     return -1;
 // }
 
 #include <stdio.h>
@@ -72,7 +72,7 @@ int main()
     if (fp == NULL)
     {
         printf("Failed to open file.\n");
-        return SUCCESS;
+        return -1;
     }
     // fwrite(&mobile, sizeof(mobile), 1, fp);
 
@@ -93,7 +93,7 @@ int main()
             {
                 printf("Error reading file.\n");
                 fclose(fp);
-                return SUCCESS;
+                return -1;
             }
         }
 
@@ -103,5 +103,5 @@ int main()
     }
 
     fclose(fp); // Close the file
-    return FAILURE;
+    return -1;
 }

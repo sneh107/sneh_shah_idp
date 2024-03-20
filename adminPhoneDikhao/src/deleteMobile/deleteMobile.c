@@ -1,7 +1,7 @@
 #include "../../inc/includes.h"
-#include "../../inc/struct.h"
-#include "../../inc/utils.h"
+#include "../../inc/common/utils.h"
 void displayOutdatedMobiles();
+int isIdValid(int *id);
 
 int deleteMobile()
 {
@@ -10,14 +10,14 @@ int deleteMobile()
     int idToDelete;
     // printf("Enter the ID of the mobile to delete: ");
     // scanf("%d", &idToDelete);
-    if (!isIdValid(&idToDelete))
+    if (isIdValid(&idToDelete) == -1)
     {
-        return FAILURE;
+        return -1;
     }
 
-        if (!confirm())
+    if (confirm() == -1)
     {
-        return FAILURE;
+        return -1;
     }
 
     FILE *file = openFile("./files/mobileData.bin", "rb");
@@ -25,7 +25,7 @@ int deleteMobile()
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
 
     FILE *tempFile = openFile("./files/tempMobileData.bin", "wb");
@@ -34,11 +34,11 @@ int deleteMobile()
         printf("\n\e[31mError: Unable to open tempMobileData.bin file.\e[m\n");
         escape();
         fclose(file);
-        return FAILURE;
+        return -1;
     }
 
     MobileData mobile;
-    while (readMobile(file, &mobile))
+    while (readMobile(file, &mobile) == 1)
     {
         if (mobile.id != idToDelete)
         {
@@ -81,4 +81,45 @@ void displayOutdatedMobiles()
 
     fclose(file);
     // escape();
+}
+
+int isIdValid(int *id)
+{
+    printf("Enter the ID of the mobile to delete: ");
+    getIntInput(id);
+    // getchar();
+
+    FILE *file = openFile("./files/mobileData.bin", "rb");
+    if (file == NULL)
+    {
+        printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
+        escape();
+        return -1;
+    }
+
+    // printf("demo");
+    int idFound;
+    MobileData mobile;
+
+    while (readMobile(file, &mobile) == 1)
+    {
+        if (mobile.id == *id && mobile.displayFlag == 2)
+        {
+            idFound = 1;
+            break;
+        }
+    }
+
+    fclose(file);
+
+    if (idFound != 1)
+    {
+        printf("\n\e[31mInvalid ID.\e[m\n");
+        // getchar();
+        // escape();
+        escape();
+        return -1;
+    }
+
+    return 0;
 }

@@ -1,9 +1,9 @@
 #include "../../inc/includes.h"
-#include "../../inc/struct.h"
-#include "../../inc/searchMobile.h"
-#include "../../inc/utils.h"
+#include "../../inc/searchMobile/searchMobile.h"
+#include "../../inc/common/utils.h"
 
 int foundResult;
+char tempstr[50];
 
 void searchMobile()
 {
@@ -41,7 +41,7 @@ int displaySearchMenu()
             escape();
             break;
         case 3:
-            return FAILURE;
+            return 0;
             break;
         case 4:
             printf("\n\e[1;33mExiting Application ...\e[m\n");
@@ -54,8 +54,9 @@ int displaySearchMenu()
                 exit(1);
             }
             printf("\n\e[31mInvalid choice. Please try again.\e[m\n");
+            escape();
             searchCount++;
-            return FAILURE;
+            // return -1;
             break;
         }
     }
@@ -69,13 +70,14 @@ int searchByMobileName()
 
     printf("Enter Mobile Name to search: ");
     scanf(" %[^\n]", mobileName);
+    strcpy(tempstr, mobileName);
 
     FILE *file = openFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
 
     int foundMobiles = 0;
@@ -102,13 +104,14 @@ int searchByBrandName()
 
     printf("Enter Brand Name to search: ");
     scanf(" %[^\n]", brandName);
+    strcpy(tempstr, brandName);
 
     FILE *file = openFile("./files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
     int foundMobiles = 0;
     printHeader();
@@ -131,13 +134,13 @@ int mobileFound(int foundMobiles)
     if (foundMobiles == 0)
     {
         printf("\n\e[31mNo matching mobiles found.\e[m\n");
-        return FAILURE;
+        return -1;
         // escape();
     }
     else
     {
         printf("\n\e[32m%d\e[m Mobiles Found.\n", foundMobiles);
-        return SUCCESS;
+        return 1;
         // escape();
     }
 }

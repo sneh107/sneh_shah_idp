@@ -3,14 +3,14 @@ char cwd[100];
 if (getcwd(cwd, sizeof(cwd)) == NULL)
 {
     perror("getcwd() error");
-    return 1;
+    return -1;
 }
 
 char *pos = strstr(cwd, "_test-PhoneDikhao");
 if (pos == NULL)
 {
     printf("Project directory not found in the current path.\n");
-    return 1;
+    return -1;
 }
 
 int projectPathLength = pos - cwd + strlen("_test-PhoneDikhao");

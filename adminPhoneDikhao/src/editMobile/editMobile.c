@@ -1,10 +1,11 @@
 #include "../../inc/includes.h"
-#include "../../inc/struct.h"
-#include "../../inc/utils.h"
-#include "../../inc/searchMobile.h"
-#include "../../inc/editMobile.h"
+#include "../../inc/common/utils.h"
+#include "../../inc/searchMobile/searchMobile.h"
+#include "../../inc/editMobile/editMobile.h"
 
 extern int foundResult;
+extern char tempstr[50];
+int searchFlag;
 
 int editMobile()
 {
@@ -24,13 +25,15 @@ int editMobile()
     switch (choice)
     {
     case 1:
+        searchFlag = 1;
         searchByMobileName();
         break;
     case 2:
+        searchFlag = 2;
         searchByBrandName();
         break;
     case 3:
-        return FAILURE;
+        return 0;
         break;
     case 4:
         printf("\n[1;33mExiting Application ...\e[m\n");
@@ -47,21 +50,21 @@ int editMobile()
         break;
     }
 
-    if (foundResult == 0)
+    if (foundResult == -1)
     {
         escape();
-        return FAILURE;
+        return -1;
     }
 
     int idToEdit;
     printf("Enter the ID of the mobile to edit: ");
     getIntInput(&idToEdit);
 
-    if (!performEdit(idToEdit))
+    if (performEdit(idToEdit) == -1)
     {
-        printf("\n\e[31mError occurred during editing.\e[m\n");
-        escape();
-        return FAILURE;
+        // printf("\n\e[31mError occurred during editing.\e[m\n");
+        // escape();
+        return -1;
     }
 
     printf("\n\e[32mMobile details updated successfully.\e[m\n");
@@ -75,31 +78,48 @@ int performEdit(int idToEdit)
     if (file == NULL)
     {
         printf("\e[31mError: Unable to open mobileData.bin file.\e[m\n");
-        return FAILURE;
+        escape();
+        return -1;
     }
 
     MobileData mobile;
     int found = 0;
 
-    do
+    if (searchFlag == 1)
     {
-        readResult = readMobile(file, &mobile);
-        if (readResult == 1 && mobile.id == idToEdit)
+        do
         {
-            found = 1;
-            break;
-        }
-    } while (readResult == 1);
-
-    if (!found)
+            readResult = readMobile(file, &mobile);
+            if (readResult == 1 && mobile.id == idToEdit && strcasecmp(mobile.name, tempstr) == 0)
+            {
+                found = 1;
+                break;
+            }
+        } while (readResult == 1);
+    }
+    else if (searchFlag == 2)
     {
-        printf("\e[31mMobile with ID %d not found.\e[m\n", idToEdit);
-        fclose(file);
-        return FAILURE;
+        do
+        {
+            readResult = readMobile(file, &mobile);
+            if (readResult == 1 && mobile.id == idToEdit && strcasecmp(mobile.brandName, tempstr) == 0)
+            {
+                found = 1;
+                break;
+            }
+        } while (readResult == 1);
     }
 
-    if (!displayEditMenu(&mobile))
-        return FAILURE;
+    if (found == 0)
+    {
+        printf("\e[31mMobile with ID %d not found.\e[m\n", idToEdit);
+        escape();
+        fclose(file);
+        return -1;
+    }
+
+    if (displayEditMenu(&mobile) == -1)
+        return -1;
 
     fseek(file, -sizeof(MobileData), SEEK_CUR);
 
@@ -107,7 +127,7 @@ int performEdit(int idToEdit)
 
     fclose(file);
 
-    return SUCCESS;
+    return 0;
 }
 
 int displayEditMenu(MobileData *mobile)
@@ -182,13 +202,14 @@ int displayEditMenu(MobileData *mobile)
             }
             break;
         case 5:
-            if (!confirm())
-                return FAILURE;
-            return SUCCESS;
+            if (confirm() == -1)
+                return -1;
+            return 0;
             break;
         case 6:
             printf("Operation Cancelled!\n");
-            return FAILURE;
+            escape();
+            return -1;
             break;
         default:
             if (defaultCount == 3)
@@ -197,6 +218,7 @@ int displayEditMenu(MobileData *mobile)
                 exit(1);
             }
             printf("\e[31mInvalid choice.\e[m\n");
+            escape();
             defaultCount++;
             break;
         }

@@ -20,22 +20,22 @@ out:
 out/adminPhoneDikhao: $(ofs)
 	gcc $^ -o $@
 
-obj/%.o: ./src/%.c  ./inc/struct.h  ./inc/main.h ./inc/utils.h
+obj/%.o: ./src/%.c ./inc/main.h ./inc/common/utils.h
 	gcc -c $< -o $@
 
-obj/%.o: ./src/addMobile/%.c ./inc/struct.h ./inc/utils.h ./inc/addMobile.h
+obj/%.o: ./src/addMobile/%.c ./inc/common/utils.h ./inc/addMobile/addMobile.h
 	gcc -c $< -o $@
 
-obj/%.o: ./src/deleteMobile/%.c ./inc/struct.h ./inc/utils.h
+obj/%.o: ./src/deleteMobile/%.c ./inc/common/utils.h
 	gcc -c $< -o $@
 
-obj/%.o: ./src/searchMobile/%.c ./inc/struct.h ./inc/utils.h ./inc/searchMobile.h
+obj/%.o: ./src/searchMobile/%.c ./inc/common/utils.h ./inc/searchMobile/searchMobile.h
 	gcc -c $< -o $@
 
-obj/%.o: ./src/editMobile/%.c ./inc/struct.h ./inc/utils.h ./inc/searchMobile.h ./inc/editMobile.h
+obj/%.o: ./src/editMobile/%.c ./inc/common/utils.h ./inc/searchMobile/searchMobile.h ./inc/editMobile/editMobile.h
 	gcc -c $< -o $@
 
-obj/%.o: ./src/common/%.c ./inc/struct.h ./inc/utils.h 
+obj/%.o: ./src/common/%.c ./inc/common/utils.h 
 	gcc -c $< -o $@
 	
 clean:

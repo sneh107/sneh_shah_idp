@@ -1,6 +1,5 @@
 #include "../../inc/includes.h"
-#include "../../inc/struct.h"
-#include "../../inc/utils.h"
+#include "../../inc/common/utils.h"
 
 void initDisplay()
 {
@@ -48,55 +47,18 @@ int readMobile(FILE *file, MobileData *mobile)
     int readResult = fread(mobile, sizeof(MobileData), 1, file);
     if (readResult == 1)
     {
-        return SUCCESS;
+        return 1;
     }
     else if (feof(file))
     {
-        return FAILURE;
+        return -1;
     }
     else
     {
         printf("\n\e[31mError reading mobile from file.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
-}
-
-int isIdValid(int *id)
-{
-    printf("Enter the ID of the mobile to delete: ");
-    getIntInput(id);
-
-    FILE *file = openFile("./files/mobileData.bin", "rb");
-    if (file == NULL)
-    {
-        printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
-        escape();
-        return FAILURE;
-    }
-
-    int idFound = 0;
-    MobileData mobile;
-
-    while (readMobile(file, &mobile))
-    {
-        if (mobile.id == *id)
-        {
-            idFound = 1;
-            break;
-        }
-    }
-
-    fclose(file);
-
-    if (!idFound)
-    {
-        printf("\n\e[31mInvalid ID.\e[m\n");
-        escape();
-        return FAILURE;
-    }
-
-    return SUCCESS;
 }
 
 int confirm()
@@ -104,34 +66,59 @@ int confirm()
     char confirmation;
     printf("Confirm? \e[1;33m(y/n):\e[m ");
     scanf(" %c", &confirmation);
+    while (getchar() != '\n')
+        ;
 
     if (confirmation == 'n' || confirmation == 'N')
     {
 
         printf("\n\e[31mOperation cancelled.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
     else if (confirmation == 'y' || confirmation == 'Y')
     {
-        return SUCCESS;
+        return 0;
     }
     else
     {
         printf("\n\e[31mInvalid Input!\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
 }
 
 void printHeader()
 {
-    printf("%-3s %-20s %-10s %-10s %-10s %-10s %-4s %-8s %-5s %-4s %-7s %-15s %-6s\n", "MID", "Name", "BrandName", "Price", "Discount", "FinalPrice", "Flag", "Quantity", "Count", "RAM", "Storage", "Chipset", "Camera");
+    printf("%-3s %-20s %-10s %-10s %-12s %-10s %-15s %-8s %-5s %-8s %-12s %-15s %-6s\n", "MID", "Name", "BrandName", "Price", "Discount(%)", "FinalPrice", "Flag", "Quantity", "Count", "RAM(Gb)", "Storage(GB)", "Chipset", "Camera(MP)");
 }
 
 void printMobileDetails(MobileData mobile)
 {
-    printf("%-3d %-20s %-10s %-10.2f %-10.2f %-10.2f %-4d %-8d %-5d %-4d %-7d %-15s %-6d\n", mobile.id, mobile.name, mobile.brandName, mobile.price, mobile.discount, mobile.finalPrice, mobile.displayFlag, mobile.quantity, mobile.count, mobile.config.ram, mobile.config.storage, mobile.config.chipset, mobile.config.camera);
+    char flag[50];
+
+    switch (mobile.displayFlag)
+    {
+    case new:
+        strcpy(flag, "New");
+        break;
+    case refurbished:
+        strcpy(flag, "Refurbished");
+        break;
+    case outdated:
+        strcpy(flag, "Outdated");
+        break;
+    case mostPurchased:
+        strcpy(flag, "Most Purchased");
+        break;
+    case outOfStock:
+        strcpy(flag, "Out of Stock");
+        break;
+    default:
+        break;
+    }
+
+    printf("%-3d %-20s %-10s %-10.2f %-12.2f %-10.2f %-15s %-8d %-5d %-8d %-12d %-15s %-6d\n", mobile.id, mobile.name, mobile.brandName, mobile.price, mobile.discount, mobile.finalPrice, flag, mobile.quantity, mobile.count, mobile.config.ram, mobile.config.storage, mobile.config.chipset, mobile.config.camera);
 }
 
 void escape()
@@ -144,7 +131,7 @@ int getIntInput(int *num)
 {
     while (scanf(" %d", num) != 1)
     {
-        printf("Invalid input. Enter an integer: ");
+        printf("Invalid input. Enter a number: ");
         // Clear the input buffer
         while (getchar() != '\n')
             ;
@@ -154,7 +141,7 @@ int getFloatInput(float *num)
 {
     while (scanf("%f", num) != 1)
     {
-        printf("Invalid input. Enter a floating-point number: ");
+        printf("Invalid input. Enter a number: ");
         // Clear the input buffer
         while (getchar() != '\n')
             ;

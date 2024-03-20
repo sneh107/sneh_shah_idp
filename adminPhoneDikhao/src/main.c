@@ -3,18 +3,17 @@
 // gcc main.c common/utils.c addMobile/addMobile.c deleteMobile/deleteMobile.c searchMobile/searchMobile.c editMobile/editMobile.c -o app
 
 #include "../inc/includes.h"
-#include "../inc/struct.h"
 #include "../inc/main.h"
-#include "../inc/utils.h"
+#include "../inc/common/utils.h"
 
 int main()
 {
     system("clear");
     initDisplay();
-    // if (!login())
-    //     return FAILURE;
+    if (login() == -1)
+        return -1;
     displayMainMenu();
-    return FAILURE;
+    return 0;
 }
 
 int login()
@@ -29,7 +28,7 @@ int login()
         printf("Enter Admin Password: ");
         scanf(" %[^\n]s", password);
 
-        if (!validateCredentials(username, password))
+        if (validateCredentials(username, password) == -1)
         {
             printf("\n\e[31mInvalid credentials. Please try again.\e[m\n");
             loginCount++;
@@ -38,18 +37,18 @@ int login()
         {
             printf("\n\e[1;32mLogin Successful!\e[m\n");
             sleep(1);
-            return SUCCESS;
+            return 0;
         }
     }
     printf("\n\e[31mToo many attempts\nExiting Application ...\e[m\n");
-    return FAILURE;
+    return -1;
 }
 int validateCredentials(char *username, char *password)
 {
     if (strcmp(username, "admin") == 0 && strcmp(password, "admin") == 0)
-        return SUCCESS;
+        return 0;
     else
-        return FAILURE;
+        return -1;
 }
 
 int displayMainMenu()
@@ -103,6 +102,7 @@ int displayMainMenu()
                 exit(1);
             }
             printf("\n\e[31mInvalid choice. Please try again.\e[m\n");
+            escape();
             mainCount++;
             break;
         }
@@ -118,7 +118,7 @@ int viewTopSellers()
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
     printHeader();
     do
@@ -143,7 +143,7 @@ int displayAll()
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
         escape();
-        return FAILURE;
+        return -1;
     }
     printf("\n");
     printHeader();
