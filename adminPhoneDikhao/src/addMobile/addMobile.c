@@ -127,7 +127,7 @@ int CheckIfMobileExists(char *tempMobName)
 {
     MobileData_t mobile;
     int readResult;
-    FILE *file = OpenFile("./files/mobileData.bin", "ab+");
+    FILE *file = OpenFile("../files/mobileData.bin", "ab+");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
@@ -156,7 +156,7 @@ int CheckIfMobileExists(char *tempMobName)
 void GenerateUniqueId(MobileData_t *mobile)
 {
     int tempId;
-    FILE *file = OpenFile("./files/currentId.txt", "a+");
+    FILE *file = OpenFile("../files/currentId.txt", "a+");
     // FILE *file = OpenFile("/home/sneh/Desktop/_test-PhoneDikhao/files/currentId.txt","a+");
     if (file == NULL)
     {
@@ -167,7 +167,7 @@ void GenerateUniqueId(MobileData_t *mobile)
     fscanf(file, "%d", &mobile->id);
     fclose(file);
 
-    file = OpenFile("./files/currentId.txt", "w");
+    file = OpenFile("../files/currentId.txt", "w");
     tempId = mobile->id + 1;
     fprintf(file, "%d", tempId);
     fclose(file);
@@ -176,7 +176,7 @@ void GenerateUniqueId(MobileData_t *mobile)
 int SaveToDB(MobileData_t *mobile)
 {
     // printf("%p", &mobile);
-    FILE *file = OpenFile("./files/mobileData.bin", "a");
+    FILE *file = OpenFile("../files/mobileData.bin", "a");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");

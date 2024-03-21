@@ -1,0 +1,11 @@
+int FilterByPrice();
+int FilterByConfig();
+int DisplayConfigMenu();
+int ViewByPriceRange(float *min_price, float *max_price);
+int FilterByStorage();
+int ViewByStorage(int *input_storage);
+int FilterByRAM();
+int ViewByRam(int *input_ram);
+int MobileFound(int foundMobiles);
+int FilterByChipset();
+int FilterByCamera();

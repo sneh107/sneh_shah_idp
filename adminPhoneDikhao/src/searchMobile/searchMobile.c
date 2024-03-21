@@ -69,7 +69,7 @@ int SearchByMobileName()
     scanf(" %[^\n]", mobileName);
     strcpy(tempstr, mobileName);
 
-    FILE *file = OpenFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("../files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
@@ -103,7 +103,7 @@ int SearchByBrandName()
     scanf(" %[^\n]", brandName);
     strcpy(tempstr, brandName);
 
-    FILE *file = OpenFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("../files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");

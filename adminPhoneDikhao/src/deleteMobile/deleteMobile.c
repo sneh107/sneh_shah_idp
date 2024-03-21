@@ -19,7 +19,7 @@ int DeleteMobile()
         return FAILURE;
     }
 
-    FILE *file = OpenFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("../files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
@@ -27,7 +27,7 @@ int DeleteMobile()
         return FAILURE;
     }
 
-    FILE *tempFile = OpenFile("./files/tempmobileData.bin", "wb");
+    FILE *tempFile = OpenFile("../files/tempmobileData.bin", "wb");
     if (tempFile == NULL)
     {
         printf("\n\e[31mError: Unable to open tempmobileData.bin file.\e[m\n");
@@ -48,8 +48,8 @@ int DeleteMobile()
     fclose(file);
     fclose(tempFile);
 
-    remove("./files/mobileData.bin");
-    rename("./files/tempmobileData.bin", "./files/mobileData.bin");
+    remove("../files/mobileData.bin");
+    rename("../files/tempmobileData.bin", "../files/mobileData.bin");
 
     printf("\n\e[32mMobile record with ID %d deleted successfully.\e[m\n", idToDelete);
     Escape1();
@@ -59,7 +59,7 @@ void DisplayOutdatedMobiles()
 {
     MobileData_t mobile;
     int readResult;
-    FILE *file = OpenFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("../files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");
@@ -88,7 +88,7 @@ int IsIdValid(int *id)
     GetIntInput(id);
     // getchar();
 
-    FILE *file = OpenFile("./files/mobileData.bin", "rb");
+    FILE *file = OpenFile("../files/mobileData.bin", "rb");
     if (file == NULL)
     {
         printf("\n\e[31mError: Unable to open mobileData.bin file.\e[m\n");

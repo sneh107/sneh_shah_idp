@@ -70,7 +70,7 @@ int EditMobile()
 int PerformEdit(int idToEdit)
 {
     int readResult;
-    FILE *file = OpenFile("./files/mobileData.bin", "rb+");
+    FILE *file = OpenFile("../files/mobileData.bin", "rb+");
     if (file == NULL)
     {
         printf("\e[31mError: Unable to open mobileData.bin file.\e[m\n");

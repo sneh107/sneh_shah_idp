@@ -1,0 +1,9 @@
+customer_name        Mobile_name          Quantity_Purchased  
+sneh shah            find n2 fold         2                   
+sharma               iphone 15 pro max    2                   
+sa                   find n2 fold         4                   
+sumit                find n2 fold         1                   
+sdfsd                iphone 15 pro max    2                   
+sumitl               iphone 15 pro max    1                   
+sumitlu              iphone 15 pro max    1                   
+herry                find n2 fold         1                   

@@ -1,0 +1,2 @@
+int ViewTopSellers();
+void DisplayMainMenu();
