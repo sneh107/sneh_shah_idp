@@ -57,6 +57,7 @@ int DisplaySearchMenu()
             break;
         }
     }
+    return SUCCESS;
 }
 
 int SearchByMobileName()
@@ -91,6 +92,7 @@ int SearchByMobileName()
 
     fclose(file);
     foundResult = MobileFound(foundMobiles);
+    return SUCCESS;
 }
 
 int SearchByBrandName()
@@ -124,6 +126,7 @@ int SearchByBrandName()
 
     fclose(file);
     foundResult = MobileFound(foundMobiles);
+    return SUCCESS;
 }
 
 int MobileFound(int foundMobiles)

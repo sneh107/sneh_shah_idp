@@ -1,3 +1,6 @@
+#ifndef SEARCH_H
+#define SEARCH_H
+
 int FilterByPrice();
 int FilterByConfig();
 int DisplayConfigMenu();
@@ -8,4 +11,8 @@ int FilterByRAM();
 int ViewByRam(int *input_ram);
 int MobileFound(int foundMobiles);
 int FilterByChipset();
+int ViewByChipset(char *input_chipset);
 int FilterByCamera();
+int ViewByCamera(int *input_camera);
+
+#endif

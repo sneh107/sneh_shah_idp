@@ -65,6 +65,7 @@ int EditMobile()
 
     printf("\n\e[32mMobile details updated successfully.\e[m\n");
     Escape1();
+    return SUCCESS;
 }
 
 int PerformEdit(int idToEdit)

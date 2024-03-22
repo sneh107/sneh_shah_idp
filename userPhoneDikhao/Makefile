@@ -9,13 +9,16 @@ finaldirs = $(patsubst %, %/%.c, $(dirs))
 # 	@echo "$(dirs)"
 # 	@echo "$(finaldirs)"
 
-all: out obj out/userPhoneDikhao
+all: out obj out/userPhoneDikhao run
 
 obj:
 	mkdir -p obj
 
 out:
 	mkdir -p out
+
+run:
+	out/userPhoneDikhao
 
 out/userPhoneDikhao: $(ofs)
 	gcc $^ -o $@

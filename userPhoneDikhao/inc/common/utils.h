@@ -20,5 +20,7 @@ void PrintMobileDetails(MobileData_t mobile);
 int IsBuy();
 int Confirm();
 void AskCustomerDetails(char *customer_name, int *buy_quantity);
+int GetIntInput(int *num);
+int GetFloatInput(float *num);
 
 #endif

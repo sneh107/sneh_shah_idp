@@ -7,11 +7,9 @@ void InitDisplay()
 
     int terminalWidth = w.ws_col;
 
-    // system("clear");
     PrintAsterisk(terminalWidth);
     PrintLeftPadding(terminalWidth, 23);
     printf("\e[1;34mWelcome to Phone-Dikhao\e[m\n");
-    // printf("\e[1m\e[34mWelcome to Phone-Dikhao\e[m\n");
     PrintLeftPadding(terminalWidth, 28);
     printf("\e[34mA mobile showcasing platform\e[m\n");
     PrintAsterisk(terminalWidth);
@@ -102,7 +100,7 @@ void PrintMobileDetails(MobileData_t mobile)
 int IsBuy()
 {
     char confirmation;
-    printf("Want to Buy? \e[1;33m(y/n):\e[m ");
+    printf("\nWant to Buy? \e[1;33m(y/n):\e[m ");
     scanf(" %c", &confirmation);
 
     if (confirmation == 'n' || confirmation == 'N')
@@ -129,8 +127,6 @@ int Confirm()
     char confirmation;
     printf("Confirm? \e[1;33m(y/n):\e[m ");
     scanf(" %c", &confirmation);
-    while (getchar() != '\n')
-        ;
 
     if (confirmation == 'n' || confirmation == 'N')
     {
@@ -157,5 +153,25 @@ void AskCustomerDetails(char *customer_name, int *buy_quantity)
     scanf(" %49[^\n]s", customer_name);
 
     printf("Enter Quantity to Purchase: ");
-    scanf(" %d", buy_quantity);
+    GetIntInput(buy_quantity);
+}
+
+int GetIntInput(int *num)
+{
+    while (scanf(" %d", num) != 1)
+    {
+        printf("Invalid input. Enter a number: ");
+        while (getchar() != '\n')
+            ;
+    }
+}
+
+int GetFloatInput(float *num)
+{
+    while (scanf("%f", num) != 1)
+    {
+        printf("Invalid input. Enter a number: ");
+        while (getchar() != '\n')
+            ;
+    }
 }

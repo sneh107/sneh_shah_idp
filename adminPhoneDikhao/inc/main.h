@@ -15,8 +15,6 @@
  *
  * History
  *
- * Mar/20/2024, Sneh Shah, Removed unnecessary functions declaration from here and placed in respective header files
- *
  * Mar/18/2024, Sneh Shah, Created
  *
  ******************************************************************************/

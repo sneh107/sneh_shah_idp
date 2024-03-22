@@ -1,4 +1,3 @@
-// #include "../../inc/includes.h"
 #include "../../inc/main.h"
 #include "../../inc/common/utils.h"
 #include "../../inc/buy/buy_top_sellers.h"
@@ -8,13 +7,14 @@ int BuyTopSellers()
     char input_name[50];
     char customer_name[50];
     int buy_quantity;
+    system("clear");
+    InitDisplay();
+    printf("\e[36mBest Sellers:\e[m\n");
     ViewTopSellers();
     if (IsBuy() == -1)
-        return -1;
-    printf("Enter the name of the mobile to buy: ");
+        return FAILURE;
+    printf("\nEnter the name of the mobile to buy: ");
     scanf(" %49[^\n]s", input_name);
-    // while (getchar() != '\n')
-    //     ;
 
     FILE *file = OpenFile("../files/mobileData.bin", "rb+");
     if (file == NULL)
@@ -42,15 +42,17 @@ int BuyTopSellers()
     {
         fclose(file);
         printf("\n\e[31mInvalid Name.\e[m\n");
-        // getchar();
-        // Escape();
         Escape();
         return FAILURE;
     }
 
     AskCustomerDetails(customer_name, &buy_quantity);
+    ProcessPurchase(&mobile, file, input_name, customer_name, buy_quantity);
+}
 
-    if (buy_quantity > mobile.quantity)
+int ProcessPurchase(MobileData_t *mobile, FILE *file, char input_name[], char customer_name[], int buy_quantity)
+{
+    if (buy_quantity > mobile->quantity)
     {
         fclose(file);
         printf("Not Enough Quantity!\n");
@@ -58,29 +60,26 @@ int BuyTopSellers()
         return FAILURE;
     }
 
-    // printf("Your name is : %s\n", customer_name);
-    // printf("Your quan is : %d\n", buy_quantity);
-
     if (Confirm() == -1)
     {
         fclose(file);
         return FAILURE;
     }
 
-    mobile.count = mobile.count + buy_quantity;
-    if (mobile.count >= 5)
+    mobile->count = mobile->count + buy_quantity;
+    if (mobile->count >= 5)
     {
-        mobile.displayFlag = mostPurchased;
+        mobile->displayFlag = mostPurchased;
     }
-    mobile.quantity = mobile.quantity - buy_quantity;
-    if (mobile.quantity == 0)
+    mobile->quantity = mobile->quantity - buy_quantity;
+    if (mobile->quantity == 0)
     {
-        mobile.displayFlag = outOfStock;
+        mobile->displayFlag = outOfStock;
     }
 
     fseek(file, -sizeof(MobileData_t), SEEK_CUR);
 
-    fwrite(&mobile, sizeof(MobileData_t), 1, file);
+    fwrite(mobile, sizeof(MobileData_t), 1, file);
 
     fclose(file);
 
@@ -92,7 +91,6 @@ int BuyTopSellers()
         return FAILURE;
     }
 
-    // fprintf(file, "%-20s %-20s %-20s\n", "customer_name", "Mobile_name", "Quantity_Purchased");
     fprintf(file, "%-20s %-20s %-20d\n", customer_name, input_name, buy_quantity);
 
     fclose(file);
@@ -100,64 +98,3 @@ int BuyTopSellers()
     Escape();
     return SUCCESS;
 }
-
-// int IsBuy()
-// {
-//     char confirmation;
-//     printf("Want to Buy? \e[1;33m(y/n):\e[m ");
-//     scanf(" %c", &confirmation);
-
-//     if (confirmation == 'n' || confirmation == 'N')
-//     {
-
-//         printf("\n\e[31mOperation cancelled.\e[m\n");
-//         Escape();
-//         return FAILURE;
-//     }
-//     else if (confirmation == 'y' || confirmation == 'Y')
-//     {
-//         return SUCCESS;
-//     }
-//     else
-//     {
-//         printf("\n\e[31mInvalid Input!\e[m\n");
-//         Escape();
-//         return FAILURE;
-//     }
-// }
-
-// int Confirm()
-// {
-//     char confirmation;
-//     printf("Confirm? \e[1;33m(y/n):\e[m ");
-//     scanf(" %c", &confirmation);
-//     while (getchar() != '\n')
-//         ;
-
-//     if (confirmation == 'n' || confirmation == 'N')
-//     {
-
-//         printf("\n\e[31mOperation cancelled.\e[m\n");
-//         Escape();
-//         return FAILURE;
-//     }
-//     else if (confirmation == 'y' || confirmation == 'Y')
-//     {
-//         return SUCCESS;
-//     }
-//     else
-//     {
-//         printf("\n\e[31mInvalid Input!\e[m\n");
-//         Escape();
-//         return FAILURE;
-//     }
-// }
-
-// void AskCustomerDetails(char *customer_name, int *buy_quantity)
-// {
-//     printf("Enter Your Name: ");
-//     scanf(" %49[^\n]s", customer_name);
-
-//     printf("Enter Quantity to Purchase: ");
-//     scanf(" %d", buy_quantity);
-// }

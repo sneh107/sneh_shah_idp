@@ -8,7 +8,7 @@
 int main()
 {
     DisplayMainMenu();
-    return 0;
+    return SUCCESS;
 }
 
 int ViewTopSellers()
@@ -45,14 +45,15 @@ void DisplayMainMenu()
 
         system("clear");
         InitDisplay();
+        printf("\e[1;36mBest Sellers:\e[m\n");
         ViewTopSellers();
-        printf("\nMain Menu:\n");
+        printf("\n\e[1;36mMain Menu:\e[m\n");
         printf("1. Buy Top Sellers\n");
         printf("2. Search by Price Range\n");
         printf("3. Search by Configuration\n");
         printf("4. Exit\n");
         printf("Enter your choice: ");
-        scanf("%d", &choice);
+        GetIntInput(&choice);
 
         switch (choice)
         {
