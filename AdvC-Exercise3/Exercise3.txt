@@ -1,0 +1,22 @@
+stack is ordered heap is unordered
+heap difeerent sizes at  runtime and we xan resize it at runtime
+
+When memory allocation is done, the actual heap space allocated is one word larger than the requested memory. The extra word is used to store the size of the allocation and is later used by free( )
+
+valgrind --leak-check=full \
+         --show-leak-kinds=all \
+         --track-origins=yes \
+         --verbose \
+         --log-file=valgrind-out.txt \
+         ./executable exampleParam1
+The flags are, in short:
+
+--leak-check=full: "each individual leak will be shown in detail"
+--show-leak-kinds=all: Show all of "definite, indirect, possible, reachable" leak kinds in the "full" report.
+--track-origins=yes: Favor useful output over speed. This tracks the origins of uninitialized values, which could be very useful for memory errors. Consider turning off if Valgrind is unacceptably slow.
+--verbose: Can tell you about unusual behavior of your program. Repeat for more verbosity.
+--log-file: Write to a file. Useful when output exceeds terminal space.
+
+
+If the given size is smaller than the actual, it will simply reduce the memory size. 3. If the given size is bigger than the actual, it will check whether it can expand the already available memory. If it is possible it will simply resize the memory.Otherwise, realloc will create the new block of memory with the larger size and copy the old data to that newly allocated memory and than it will deallocate the old memory area.
+
