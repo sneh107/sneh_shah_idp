@@ -1,0 +1,37 @@
+In simple, An interrupt is a mechanism that allows hardware or software components to signal to the processor that an event has occurred that requires immediate attention.
+
+An interrupt is a signal to the processor emitted by hardware or software indicating an event that needs immediate attention. Whenever an interrupt occurs, the controller completes the execution of the current instruction and starts the execution of an Interrupt Service Routine (ISR) or Interrupt Handler.
+
+Interrupts are crucial for multitasking and real-time processing in computer systems because they allow the CPU to respond quickly to events without wasting time continuously polling for them.
+
+Interrupt Request (IRQ): In Linux, hardware devices generate interrupts using Interrupt Request (IRQ) lines. Each device typically has its own IRQ line, which is a hardware signal line that notifies the CPU about events occurring in the device.
+
+Interrupt Service Routine (ISR): When an interrupt occurs, the CPU suspends its current execution and jumps to the Interrupt Service Routine (ISR) associated with the interrupting device. The ISR is a piece of code responsible for handling the interrupt and performing necessary actions, such as acknowledging the interrupt, reading data from the device, or initiating further processing.
+
+Kernel Interrupt Handling: The Linux kernel manages interrupt handling through Interrupt Descriptor Tables (IDTs) and Interrupt Service Routines (ISRs). When an interrupt occurs, the kernel identifies the corresponding ISR using the IDT and invokes the registered interrupt handler.
+
+Let's say you're playing a game on your computer when suddenly you press a key on the keyboard. The keyboard sends an interrupt signal to the processor, indicating that a key has been pressed.
+
+The processor pauses the game and starts executing the ISR associated with keyboard interrupts. This ISR reads the keycode from the keyboard buffer, processes it, and updates the game state accordingly (e.g., moving the character on the screen).
+
+Once the ISR completes its task, the processor returns to the game, restoring its previous state, and you can continue playing as if nothing happened.
+
+Consider a scenario where you have a microcontroller-based system monitoring temperature using a sensor. The microcontroller is programmed to read temperature values at regular intervals and perform certain actions based on those readings.
+
+Now, let's introduce an interrupt into this scenario. Suppose there's a critical temperature threshold, and when the temperature exceeds this threshold, it triggers an interrupt to immediately alert the microcontroller to take appropriate action, such as activating a cooling system or sending an alert message.
+
+Here's a breakdown of what happens when the interrupt occurs:
+
+Normal Execution: The microcontroller is executing its main program, which involves tasks like reading temperature, updating display, etc.
+
+Interrupt Occurrence: Suddenly, the temperature exceeds the threshold value, triggering an interrupt signal.
+
+Interrupt Signal: The interrupt signal is sent to the microcontroller, indicating that an interrupt event (in this case, high temperature) has occurred and needs immediate attention.
+
+Interrupt Handling: Upon receiving the interrupt signal, the microcontroller temporarily suspends its current task (which might be reading temperature or updating display) and acknowledges the interrupt.
+
+Execution of Interrupt Service Routine (ISR): The microcontroller then starts executing a specific block of code called the Interrupt Service Routine (ISR) associated with the temperature threshold interrupt. This ISR is responsible for handling the high-temperature event.
+
+Execution of ISR: The ISR executes the necessary actions to handle the interrupt. In this example, it activates the cooling system to lower the temperature and sends an alert message to notify the user or system administrator about the high temperature.
+
+Return from Interrupt: Once the ISR completes its tasks, the microcontroller returns to the interrupted task. If a context switch was performed earlier, the microcontroller restores the saved state of the interrupted task and resumes its execution.
