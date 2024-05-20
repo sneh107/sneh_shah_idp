@@ -1,0 +1,59 @@
+#include "../inc/linked_list.h"
+
+int Initlinklist(void **head, int max_size_of_queue, int flag)
+{
+    Node_t **head1 = (Node_t **)head;
+    head = NULL;
+    // Node_t *temp = NULL;
+    int num = 0;
+    for (int i = 0; i < max_size_of_queue; i++)
+    {
+        printf("Enter Element: ");
+        scanf(" %d", &num);
+        if (i == 0)
+        {
+            (*head1)->data = num;
+            (*head1)->next = NULL;
+        }
+        else
+        {
+            InsertNode(head1, num);
+        }
+    }
+    return SUCCESS;
+}
+
+int Displaylist(void *head1)
+{
+    Node_t *head = (Node_t *)head1;
+    head1 = NULL;
+    if (head == NULL)
+    {
+        printf("Empty!\n");
+        return SUCCESS;
+    }
+
+    while (head != NULL)
+    {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+    printf("\n");
+    head = NULL;
+    return SUCCESS;
+}
+
+int getListlSize(void *head1, int *length)
+{
+    Node_t *head = (Node_t *)head1;
+    if (head == NULL)
+    {
+        // (*length)++;
+        return *length;
+    }
+    else
+    {
+        (*length)++;
+        return getListlSize(head->next, length);
+    }
+}
