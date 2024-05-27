@@ -1,3 +1,26 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file search_node.c
+ * @brief File containing function for searching a node in a binary search tree.
+ *
+ * This file implements the searchNode function, which searches
+ * for a node with a given target value in a binary search tree.
+ * It returns the frequency of occurrence of the target value if
+ * found, otherwise it prints a message indicating that the value
+ * was not found.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * May/21/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/binary_search_tree.h"
 
 int searchNode(Node_t *root, int target)

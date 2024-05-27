@@ -1,5 +1,7 @@
-cfiles = $(wildcard src/*.c)
-ofiles = $(patsubst src/%.c, obj/%.o, $(cfiles))
+CC = gcc
+CFLAGS = -c -g -Wall -Wextra
+SRC = $(wildcard src/*.c)
+OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))
 
 all: obj out out/app run
 
@@ -9,11 +11,11 @@ obj:
 out:
 	mkdir -p out
 
-out/app: $(ofiles)
-	gcc $^ -o $@
+out/app: $(OBJ)
+	$(CC) $^ -o $@
 
 obj/%.o: src/%.c
-	gcc -c -g -Wall $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 	
 run:
 	@out/app

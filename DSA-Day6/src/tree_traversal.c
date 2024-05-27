@@ -1,3 +1,25 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file tree_traversal.c
+ * @brief File containing functions for tree traversal in a binary search tree.
+ *
+ * This file implements functions for various tree traversal methods
+ * including level-order, pre-order, in-order, and post-order traversal.
+ * It provides functionality to traverse the tree and print the elements
+ * in the specified order.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * May/21/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/binary_search_tree.h"
 
 int EnQueue(QueueNode_t **queue, Node_t *data)

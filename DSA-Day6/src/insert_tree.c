@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file insert_tree.c
+ * @brief File containing functions for inserting nodes into a binary search tree.
+ *
+ * This file implements the InsertInTree function, which inserts
+ * a node with given data into a binary search tree. If the node
+ * already exists in the tree, it increments its frequency instead
+ * of inserting a new node.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * May/21/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
 #include "../inc/binary_search_tree.h"
 
 int InsertInTree(Node_t **root, int data)

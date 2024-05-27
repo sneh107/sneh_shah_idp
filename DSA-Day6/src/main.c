@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file main.c
+ * @brief Main program file for binary search tree operations.
+ *
+ * This file contains the main function to perform operations on a binary search tree,
+ * including insertion, traversal, searching, and deletion.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * May/21/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/binary_search_tree.h"
 
 int main()
