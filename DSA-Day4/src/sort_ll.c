@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file sort_ll.c
+ * @brief Functions to sort a linked list using different sorting algorithms.
+ *
+ * This file implements various sorting algorithms such as bubble sort,
+ * quick sort, and radix sort to sort a linked list.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * May/02/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 #include <time.h>
 

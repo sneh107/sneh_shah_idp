@@ -1,3 +1,26 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file insert_node_ll.c
+ * @brief Functions to insert nodes into a linked list.
+ *
+ * Provides functions to insert nodes at the start, end, or
+ * at a specific position in a linked list.The functions support
+ * insertion in either a stack or queue manner based on the
+ * flag variable. Includes error handling for memory allocation
+ * failures and maximum limit reached scenarios.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * May/02/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 extern int flag;

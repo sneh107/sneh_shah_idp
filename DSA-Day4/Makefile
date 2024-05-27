@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -c -g -Wall
+CFLAGS = -fpic -c -Wall -g
 SRC = $(shell find src -name '*.c' ! -name 'main.c')
 OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))
 
-all: obj out lib lib/libll.a out/app run
+all: obj out lib lib/lib_linked_list4.so out/app run
 
 obj:
 	mkdir -p obj
@@ -14,11 +14,12 @@ out:
 lib:
 	mkdir -p lib
 
-lib/libll.a: $(OBJ)
-	ar -rcs $@ $?
+lib/lib_linked_list4.so: $(OBJ)
+	$(CC) -shared -o $@ $^
+	sudo cp lib/lib_linked_list4.so /usr/lib/
 
-out/app: obj/main.o lib/libll.a
-	$(CC) $< -L./lib -lll -o $@
+out/app: src/main.c
+	$(CC) $< -l_linked_list4 -o $@
 
 obj/%.o: src/%.c
 	$(CC) $(CFLAGS) $< -o $@
