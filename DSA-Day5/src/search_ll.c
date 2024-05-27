@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file search_ll.c
+ * @brief Functions for searching elements in a linked list.
+ *
+ * This file provides functions for searching elements in a
+ * linked list, including sequential search and binary search methods.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * May/14/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 void SequentialSearch(Node_t *head, int target)
