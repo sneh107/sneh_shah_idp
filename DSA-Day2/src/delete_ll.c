@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file delete_ll.c
+ * @brief Functions to delete nodes from a linked list.
+ *
+ * This file provides functions to delete nodes from a linked list
+ * including deleting the first node, deleting a node from a
+ * specified position, and deleting the entire linked list.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Apr/29/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 int DeleteNode(void *head1)

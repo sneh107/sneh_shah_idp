@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file reverse_ll.c
+ * @brief Functions to reverse a linked list.
+ *
+ * This file contains functions to reverse a linked list using
+ * iterative and recursive approaches.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Apr/29/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 // int ReverseList(void *head1)

@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file utils.c
+ * @brief Utility functions for linked list operations.
+ *
+ * This file contains utility functions to initialize a linked list,
+ * display its contents, and get its size.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Apr/29/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 int Initlinklist(void **head, int max_size_of_queue, int flag)

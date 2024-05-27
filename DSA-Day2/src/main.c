@@ -1,3 +1,25 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file main.c
+ * @brief Main program for managing a linked list data structure.
+ *
+ * Implements a program to manage a linked list data structure. Allows the user
+ * to choose between stack or queue operations, specify the maximum size of the list,
+ * and perform various operations such as insertion, deletion, reversal, and display.
+ * Also includes options to get the size of the list and exit the program.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Apr/29/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 int flag = 0;
