@@ -1,3 +1,27 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file main.c
+ * @brief Entry point of the program with circular doubly linked list operations.
+ *
+ * This file contains the main function, which serves as the entry
+ * point of the program. It demonstrates various operations on a
+ * circular doubly linked list, including insertion at the beginning,
+ * end, and intermediate positions, deletion at the beginning, end,
+ * and intermediate positions, searching for a node, displaying the
+ * list contents, getting the size of the list, and deleting the entire list.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Apr/30/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 /**

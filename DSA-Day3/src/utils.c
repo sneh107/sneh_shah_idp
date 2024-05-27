@@ -1,3 +1,25 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file ytils.c
+ * @brief Utility functions for circular doubly linked list manipulation.
+ *
+ * This file contains utility functions for managing circular doubly
+ * linked lists, including deleting the entire list, finding the size
+ * of the list, searching for a node with a specific value, and
+ * displaying the list contents.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Apr/30/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 int DeleteList(Node_t **head)

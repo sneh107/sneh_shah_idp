@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file delete_ll.c
+ * @brief Functions for deleting nodes from a circular doubly linked list.
+ *
+ * This file contains functions to delete nodes from a circular doubly linked list. The functions include deleting a node
+ * at the beginning, end, or an intermediate position of the list.
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Apr/30/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include "../inc/linked_list.h"
 
 int DeleteAtStart(Node_t **head)
