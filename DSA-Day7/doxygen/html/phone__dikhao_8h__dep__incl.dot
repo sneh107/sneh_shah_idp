@@ -1,0 +1,19 @@
+digraph "/home/sneh/Downloads/_data_structure_home-20240527T043002Z-001/_data_structure_home/day7/inc/phone_dikhao.h"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="/home/sneh/Downloads\l/_data_structure_home\l-20240527T043002Z-001\l/_data_structure_home/day7\l/inc/phone_dikhao.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="/home/sneh/Downloads\l/_data_structure_home\l-20240527T043002Z-001\l/_data_structure_home/day7\l/src/add_mobile.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$add__mobile_8c.html",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="/home/sneh/Downloads\l/_data_structure_home\l-20240527T043002Z-001\l/_data_structure_home/day7\l/src/delete_mobile.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$delete__mobile_8c.html",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="/home/sneh/Downloads\l/_data_structure_home\l-20240527T043002Z-001\l/_data_structure_home/day7\l/src/edit_mobile.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$edit__mobile_8c.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="/home/sneh/Downloads\l/_data_structure_home\l-20240527T043002Z-001\l/_data_structure_home/day7\l/src/main.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8c.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="/home/sneh/Downloads\l/_data_structure_home\l-20240527T043002Z-001\l/_data_structure_home/day7\l/src/search_mobile.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$search__mobile_8c.html",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="/home/sneh/Downloads\l/_data_structure_home\l-20240527T043002Z-001\l/_data_structure_home/day7\l/src/utils.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$utils_8c.html",tooltip=" "];
+}
