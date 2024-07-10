@@ -1,9 +1,26 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file thread_book.c
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Jun/5/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <errno.h> // Include errno.h for perror
 
 #define bufferSize 10
 #define readSize 1024
@@ -34,6 +51,14 @@ stats_t consumerStats[2] = {0};
 long totalSize = 0;
 pthread_t bookKeepingThread;
 
+/**
+ * @brief Calculate statistics for the given data.
+ * 
+ * @param stats Pointer to the statistics structure.
+ * @param buffer Pointer to the data buffer.
+ * @param size Size of the data buffer.
+ */
+
 void calculateStats(stats_t *stats, char *buffer, size_t size)
 {
     stats->numWordsRead = 0;
@@ -46,6 +71,14 @@ void calculateStats(stats_t *stats, char *buffer, size_t size)
     stats->readCompletion = (ftell(input) * 100.0) / totalSize;
 }
 
+/**
+ * @brief Encrypt data with a given offset.
+ * 
+ * @param data Pointer to the data buffer.
+ * @param size Size of the data buffer.
+ * @param offset Offset value for encryption.
+ */
+
 void encrypt_data(char *data, size_t size, int offset)
 {
     for (size_t i = 0; i < size; i++)
@@ -53,6 +86,13 @@ void encrypt_data(char *data, size_t size, int offset)
         data[i] += offset;
     }
 }
+
+/**
+ * @brief Producer thread function.
+ * 
+ * @param arg Pointer to the argument (unused).
+ * @return void* 
+ */
 
 void *producer(void *arg)
 {
@@ -95,6 +135,13 @@ void *producer(void *arg)
     printf("Producer thread exiting\n");
     pthread_exit(NULL);
 }
+
+/**
+ * @brief Consumer thread function.
+ * 
+ * @param arg Pointer to the argument (interval value).
+ * @return void* 
+ */
 
 void *consumer(void *arg)
 {
@@ -141,6 +188,14 @@ void *consumer(void *arg)
     pthread_exit(NULL);
 }
 
+
+/**
+ * @brief Bookkeeping thread function to print statistics.
+ * 
+ * @param arg Pointer to the argument (unused).
+ * @return void* 
+ */
+
 void *bookKeeper(void *arg)
 {
     printf("Book-keeping thread started\n");
@@ -170,6 +225,13 @@ void *bookKeeper(void *arg)
     pthread_exit(NULL);
 }
 
+
+/**
+ * @brief Signal handler for SIGINT to gracefully terminate the program.
+ * 
+ * @param sig Signal number.
+ */
+
 void handle_sigint(int sig)
 {
     printf("SIGINT received, terminating gracefully...\n");
@@ -178,6 +240,12 @@ void handle_sigint(int sig)
     pthread_cond_broadcast(&condNotEmpty);
     pthread_cond_signal(&condStats);
 }
+
+/**
+ * @brief Main function to initialize resources and create threads.
+ * 
+ * @return int Returns 0 on successful completion.
+ */
 
 int main()
 {
@@ -197,22 +265,18 @@ int main()
         input = fopen("../files/input.txt", "r");
         if (input == NULL)
         {
-            perror("Unable to open file");
+            perror("Unable to open input file");
             return -1;
         }
-        // perror("Unable to open file");
-        // return -1;
     }
     if (output == NULL)
     {
         output = fopen("../files/output.txt", "a");
         if (output == NULL)
         {
-            perror("Unable to open file");
+            perror("Unable to open output file");
             return -1;
         }
-        // perror("Unable to open file");
-        // return -1;
     }
 
     fseek(input, 0, SEEK_END);
@@ -221,30 +285,72 @@ int main()
 
     int consumerIntervals[2] = {2, 3};
 
-    pthread_create(&producerThread, NULL, producer, NULL);
-    pthread_create(&bookKeepingThread, NULL, bookKeeper, NULL);
-
-    for (int index = 0; index < 2; index++)
+    if (pthread_create(&producerThread, NULL, producer, NULL) != 0)
     {
-        pthread_create(&consumerThreads[index], NULL, consumer, &consumerIntervals[index]);
-        usleep(100);
+        perror("Error creating producer thread");
+        return -1;
+    }
+    if (pthread_create(&bookKeepingThread, NULL, bookKeeper, NULL) != 0)
+    {
+        perror("Error creating bookkeeping thread");
+        return -1;
     }
 
-    pthread_join(producerThread, NULL);
     for (int index = 0; index < 2; index++)
     {
-        pthread_join(consumerThreads[index], NULL);
+        if (pthread_create(&consumerThreads[index], NULL, consumer, &consumerIntervals[index]) != 0)
+        {
+            perror("Error creating consumer thread");
+            return -1;
+        }
+        usleep(100); // Small delay to stagger thread creation
+    }
+
+    if (pthread_join(producerThread, NULL) != 0)
+    {
+        perror("Error joining producer thread");
+        return -1;
+    }
+    for (int index = 0; index < 2; index++)
+    {
+        if (pthread_join(consumerThreads[index], NULL) != 0)
+        {
+            perror("Error joining consumer thread");
+            return -1;
+        }
     }
     terminate = 1;
     pthread_cond_signal(&condStats);
-    pthread_join(bookKeepingThread, NULL);
+    if (pthread_join(bookKeepingThread, NULL) != 0)
+    {
+        perror("Error joining bookkeeping thread");
+        return -1;
+    }
 
-    pthread_mutex_destroy(&mutex);
-    pthread_cond_destroy(&condNotEmpty);
-    pthread_cond_destroy(&condNotFull);
-    pthread_cond_destroy(&condStats);
+    if (pthread_mutex_destroy(&mutex) != 0)
+    {
+        perror("Error destroying mutex");
+        return -1;
+    }
+    if (pthread_cond_destroy(&condNotEmpty) != 0)
+    {
+        perror("Error destroying condNotEmpty condition variable");
+        return -1;
+    }
+    if (pthread_cond_destroy(&condNotFull) != 0)
+    {
+        perror("Error destroying condNotFull condition variable");
+        return -1;
+    }
+    if (pthread_cond_destroy(&condStats) != 0)
+    {
+        perror("Error destroying condStats condition variable");
+        return -1;
+    }
+
     fclose(input);
     fclose(output);
 
     return 0;
 }
+
