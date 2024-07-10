@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file square_using_shm.c
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Jun/19/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -6,6 +22,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
 
 #define SHM_SIZE sizeof(struct shared_memory)
 #define MY_SHM_ID 1234
@@ -17,6 +34,13 @@ struct shared_memory
     int flag; // 0: parent reads, 1: child writes
 };
 
+/**
+ * @brief Calculates the square of a number.
+ * 
+ * @param n The number to calculate the square of.
+ * @return int The square of the number `n`.
+ */
+
 int CalculateSquare(int n)
 {
     int square = 0;
@@ -26,6 +50,12 @@ int CalculateSquare(int n)
     }
     return square;
 }
+
+/**
+ * @brief Main function demonstrating shared memory and inter-process communication.
+ * 
+ * @return int Returns 0 upon successful execution.
+ */
 
 int main()
 {
@@ -66,7 +96,6 @@ int main()
             int square = CalculateSquare(i);
             int sleep_time = (rand() % 3) + 1; // Sleep for 1 to 3 seconds
             sleep(sleep_time);
-            // usleep(rand() % 1000000);
 
             shm->number = i;
             shm->square = square;
@@ -117,3 +146,4 @@ int main()
 
     return 0;
 }
+

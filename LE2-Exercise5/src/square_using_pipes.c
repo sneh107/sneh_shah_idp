@@ -1,8 +1,32 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file square_using_pipes.c
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Jun/19/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <errno.h>
+
+/**
+ * @brief Calculates the square of a number.
+ * 
+ * @param n The number to calculate the square of.
+ * @return int The square of the number `n`.
+ */
 
 int CalculateSquare(int n)
 {
@@ -13,6 +37,12 @@ int CalculateSquare(int n)
     }
     return square;
 }
+
+/**
+ * @brief Main function demonstrating inter-process communication via pipes.
+ * 
+ * @return int Returns 0 upon successful execution.
+ */
 
 int main()
 {
@@ -40,9 +70,17 @@ int main()
         for (int i = 1; i <= 1000; ++i)
         {
             int square = CalculateSquare(i);
-            printf("child writing!\n");
-            write(pipe_fd[1], &i, sizeof(int));
-            write(pipe_fd[1], &square, sizeof(int));
+            printf("Child is writing!\n");
+            if (write(pipe_fd[1], &i, sizeof(int)) == -1)
+            {
+                perror("write");
+                exit(EXIT_FAILURE);
+            }
+            if (write(pipe_fd[1], &square, sizeof(int)) == -1)
+            {
+                perror("write");
+                exit(EXIT_FAILURE);
+            }
             usleep(100);
         }
 
@@ -56,9 +94,16 @@ int main()
         for (int i = 1; i <= 1000; ++i)
         {
             int number, square;
-            // sleep(1);
-            read(pipe_fd[0], &number, sizeof(int));
-            read(pipe_fd[0], &square, sizeof(int));
+            if (read(pipe_fd[0], &number, sizeof(int)) == -1)
+            {
+                perror("read");
+                exit(EXIT_FAILURE);
+            }
+            if (read(pipe_fd[0], &square, sizeof(int)) == -1)
+            {
+                perror("read");
+                exit(EXIT_FAILURE);
+            }
             printf("Parent is reading!\n");
             printf("Square of %d is %d\n", number, square);
         }
@@ -70,3 +115,4 @@ int main()
 
     return 0;
 }
+
