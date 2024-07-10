@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file sig_par_child.c
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * May/29/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -5,20 +21,54 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+/**
+ * @brief Signal handler for SIGUSR1.
+ *
+ * This function is called when the SIGUSR1 signal is received by the child process.
+ *
+ * @param sig The signal number.
+ */
+
 void handle_sigusr1(int sig)
 {
     printf("Child received SIGUSR1\n");
 }
+
+/**
+ * @brief Signal handler for SIGUSR2.
+ *
+ * This function is called when the SIGUSR2 signal is received by the child process.
+ *
+ * @param sig The signal number.
+ */
 
 void handle_sigusr2(int sig)
 {
     printf("Child received SIGUSR2\n");
 }
 
+/**
+ * @brief Signal handler for SIGINT.
+ *
+ * This function is called when the SIGINT signal is received by the child process.
+ *
+ * @param sig The signal number.
+ */
+
 void handle_sigint(int sig)
 {
     printf("Child received SIGINT\n");
 }
+
+/**
+ * @brief Main function to create a child process and send signals to it.
+ *
+ * The function forks a child process. The child process sets up signal handlers for
+ * SIGUSR1, SIGUSR2, and SIGINT, and waits for these signals. The parent process sends
+ * these signals to the child and waits for the child to terminate.
+ *
+ * @return int Returns 0 on successful completion, or exits with EXIT_FAILURE if fork fails.
+ */
 
 int main()
 {
