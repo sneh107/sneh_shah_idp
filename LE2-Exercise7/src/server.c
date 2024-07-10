@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file server.c
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Jul/01/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,11 +22,16 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <signal.h>
+#include <errno.h>
 
 #define PORT 7777
 #define BUFFER_SIZE 1024
 #define NAME_LEN 32
 
+/**
+ * @struct Client_node_t
+ * @brief Represents a node in the client list.
+ */
 typedef struct client_node
 {
     int sock;
@@ -24,6 +45,11 @@ pthread_mutex_t clients_mutex = PTHREAD_MUTEX_INITIALIZER;
 int server_running = 1;
 int server_fd;
 
+/**
+ * @brief Adds a new client to the linked list of clients.
+ *
+ * @param client Pointer to the client node to be added.
+ */
 void AddClient(Client_node_t *client)
 {
     pthread_mutex_lock(&clients_mutex);
@@ -33,6 +59,11 @@ void AddClient(Client_node_t *client)
     pthread_mutex_unlock(&clients_mutex);
 }
 
+/**
+ * @brief Removes a client from the linked list of clients based on its socket file descriptor.
+ *
+ * @param sock Socket file descriptor of the client to be removed.
+ */
 void RemoveClient(int sock)
 {
     pthread_mutex_lock(&clients_mutex);
@@ -58,6 +89,9 @@ void RemoveClient(int sock)
     pthread_mutex_unlock(&clients_mutex);
 }
 
+/**
+ * @brief Frees all memory used by the linked list of clients.
+ */
 void FreeAllClients()
 {
     pthread_mutex_lock(&clients_mutex);
@@ -73,6 +107,11 @@ void FreeAllClients()
     pthread_mutex_unlock(&clients_mutex);
 }
 
+/**
+ * @brief Sends a list of connected client names to a specific client.
+ *
+ * @param sock Socket file descriptor of the client to send the list to.
+ */
 void ListClients(int sock)
 {
     pthread_mutex_lock(&clients_mutex);
@@ -84,10 +123,18 @@ void ListClients(int sock)
         strcat(list, "\n");
         temp = temp->next;
     }
-    send(sock, list, strlen(list), 0);
+    if (send(sock, list, strlen(list), 0) < 0) {
+        perror("send");
+    }
     pthread_mutex_unlock(&clients_mutex);
 }
 
+/**
+ * @brief Removes newline characters from a string.
+ *
+ * @param arr The string to process.
+ * @param length Length of the string.
+ */
 void RemoveNewLine(char *arr, int length)
 {
     for (int i = 0; i < length; i++)
@@ -100,6 +147,12 @@ void RemoveNewLine(char *arr, int length)
     }
 }
 
+/**
+ * @brief Checks if a given name is unique among all connected clients.
+ *
+ * @param name Name to check.
+ * @return 1 if the name is unique, 0 otherwise.
+ */
 int IsNameUnique(char *name)
 {
     pthread_mutex_lock(&clients_mutex);
@@ -117,6 +170,12 @@ int IsNameUnique(char *name)
     return 1; // Name is unique
 }
 
+/**
+ * @brief Handles communication with a client.
+ *
+ * @param arg Pointer to the client node structure.
+ * @return NULL
+ */
 void *HandleClient(void *arg)
 {
     char buffer[BUFFER_SIZE];
@@ -127,10 +186,13 @@ void *HandleClient(void *arg)
     while (1)
     {
         memset(name, '\0', sizeof(name));
-        if (recv(cli->sock, name, NAME_LEN, 0) <= 0 || strlen(name) < 2 || strlen(name) >= NAME_LEN - 1)
+        int recv_result = recv(cli->sock, name, NAME_LEN, 0);
+        if (recv_result <= 0 || strlen(name) < 2 || strlen(name) >= NAME_LEN - 1)
         {
             printf("Enter the name correctly.\n");
-            send(cli->sock, "Enter the name correctly: ", 26, 0);
+            if (send(cli->sock, "Enter the name correctly: ", 26, 0) < 0) {
+                perror("send");
+            }
         }
         else
         {
@@ -145,7 +207,9 @@ void *HandleClient(void *arg)
             }
             else
             {
-                send(cli->sock, "Name is already taken. Enter a different name: ", 47, 0);
+                if (send(cli->sock, "Name is already taken. Enter a different name: ", 47, 0) < 0) {
+                    perror("send");
+                }
             }
         }
     }
@@ -173,7 +237,9 @@ void *HandleClient(void *arg)
             {
                 if (cli->connected_to != -1)
                 {
-                    send(cli->sock, "You are already connected to someone.\n", 38, 0);
+                    if (send(cli->sock, "You are already connected to someone.\n", 38, 0) < 0) {
+                        perror("send");
+                    }
                 }
                 else
                 {
@@ -182,7 +248,9 @@ void *HandleClient(void *arg)
 
                     if (strcmp(target_name, cli->name) == 0)
                     {
-                        send(cli->sock, "You cannot connect to yourself.\n", 32, 0);
+                        if (send(cli->sock, "You cannot connect to yourself.\n", 32, 0) < 0) {
+                            perror("send");
+                        }
                     }
                     else
                     {
@@ -198,9 +266,13 @@ void *HandleClient(void *arg)
                                 found = 1;
                                 char msg[BUFFER_SIZE];
                                 snprintf(msg, BUFFER_SIZE, "You are now connected to %s\n", temp->name);
-                                send(cli->sock, msg, strlen(msg), 0);
+                                if (send(cli->sock, msg, strlen(msg), 0) < 0) {
+                                    perror("send");
+                                }
                                 snprintf(msg, BUFFER_SIZE, "You are now connected to %s\n", cli->name);
-                                send(temp->sock, msg, strlen(msg), 0);
+                                if (send(temp->sock, msg, strlen(msg), 0) < 0) {
+                                    perror("send");
+                                }
                                 printf("\n*** %s connected to %s ***\n", cli->name, temp->name);
                                 break;
                             }
@@ -208,7 +280,9 @@ void *HandleClient(void *arg)
                         }
                         if (!found)
                         {
-                            send(cli->sock, "Connection failed.\n", 19, 0);
+                            if (send(cli->sock, "Connection failed.\n", 19, 0) < 0) {
+                                perror("send");
+                            }
                         }
                         pthread_mutex_unlock(&clients_mutex);
                     }
@@ -225,18 +299,24 @@ void *HandleClient(void *arg)
                         if (temp->sock == cli->connected_to)
                         {
                             temp->connected_to = -1;
-                            send(temp->sock, "*** You have been disconnected ***\n", 35, 0);
+                            if (send(temp->sock, "*** You have been disconnected ***\n", 35, 0) < 0) {
+                                perror("send");
+                            }
                             printf("\n*** %s disconnected from %s ***\n", cli->name, temp->name);
                             break;
                         }
                         temp = temp->next;
                     }
                     cli->connected_to = -1;
-                    send(cli->sock, "*** You have been disconnected ***\n", 35, 0);
+                    if (send(cli->sock, "*** You have been disconnected ***\n", 35, 0) < 0) {
+                        perror("send");
+                    }
                 }
                 else
                 {
-                    send(cli->sock, "You are not connected to anyone.\n", 33, 0);
+                    if (send(cli->sock, "You are not connected to anyone.\n", 33, 0) < 0) {
+                        perror("send");
+                    }
                 }
                 pthread_mutex_unlock(&clients_mutex);
             }
@@ -251,13 +331,17 @@ void *HandleClient(void *arg)
                         if (temp->sock == cli->connected_to)
                         {
                             temp->connected_to = -1;
-                            send(temp->sock, "*** You have been disconnected ***\n", 35, 0);
+                            if (send(temp->sock, "*** You have been disconnected ***\n", 35, 0) < 0) {
+                                perror("send");
+                            }
                             break;
                         }
                         temp = temp->next;
                     }
                     cli->connected_to = -1;
-                    send(cli->sock, "*** You have been disconnected ***\n", 35, 0);
+                    if (send(cli->sock, "*** You have been disconnected ***\n", 35, 0) < 0) {
+                        perror("send");
+                    }
                 }
                 snprintf(buffer, BUFFER_SIZE, "\n*** %s has left the chat ***\n", cli->name);
                 printf("%s", buffer);
@@ -270,7 +354,9 @@ void *HandleClient(void *arg)
                 {
                     char formatted_msg[BUFFER_SIZE + NAME_LEN + 3];
                     snprintf(formatted_msg, sizeof(formatted_msg), "[%s] %s", cli->name, buffer);
-                    send(cli->connected_to, formatted_msg, strlen(formatted_msg), 0);
+                    if (send(cli->connected_to, formatted_msg, strlen(formatted_msg), 0) < 0) {
+                        perror("send");
+                    }
                     printf("\nServer received from %s: %s\n", cli->name, buffer);
                     Client_node_t *temp = clients_head;
                     while (temp != NULL)
@@ -285,7 +371,9 @@ void *HandleClient(void *arg)
                 }
                 else
                 {
-                    send(cli->sock, "You are not connected to anyone.\n", 33, 0);
+                    if (send(cli->sock, "You are not connected to anyone.\n", 33, 0) < 0) {
+                        perror("send");
+                    }
                 }
             }
         }
@@ -299,13 +387,17 @@ void *HandleClient(void *arg)
                     if (temp->sock == cli->connected_to)
                     {
                         temp->connected_to = -1;
-                        send(temp->sock, "*** You have been disconnected ***\n", 35, 0);
+                        if (send(temp->sock, "*** You have been disconnected ***\n", 35, 0) < 0) {
+                            perror("send");
+                        }
                         break;
                     }
                     temp = temp->next;
                 }
                 cli->connected_to = -1;
-                send(cli->sock, "*** You have been disconnected ***\n", 35, 0);
+                if (send(cli->sock, "*** You have been disconnected ***\n", 35, 0) < 0) {
+                    perror("send");
+                }
             }
             snprintf(buffer, BUFFER_SIZE, "\n*** %s has left the chat ***\n", cli->name);
             printf("%s", buffer);
@@ -326,19 +418,29 @@ void *HandleClient(void *arg)
     pthread_exit(NULL);
 }
 
+/**
+ * @brief Broadcasts a shutdown message to all connected clients.
+ */
 void BroadcastShutdownMessage()
 {
     pthread_mutex_lock(&clients_mutex);
     Client_node_t *temp = clients_head;
     while (temp != NULL)
     {
-        send(temp->sock, "Server is shutting down.\n", 25, 0);
+        if (send(temp->sock, "Server is shutting down.\n", 25, 0) < 0) {
+            perror("send");
+        }
         close(temp->sock);
         temp = temp->next;
     }
     pthread_mutex_unlock(&clients_mutex);
 }
 
+/**
+ * @brief Signal handler function to catch SIGINT (Ctrl+C) and initiate server shutdown.
+ *
+ * @param sig Signal number.
+ */
 void SignalHandler(int sig)
 {
     if (sig == SIGINT)
@@ -349,6 +451,12 @@ void SignalHandler(int sig)
     }
 }
 
+/**
+ * @brief Main function where the server initializes, listens for client connections,
+ * and manages client interactions.
+ *
+ * @return 0 on success.
+ */
 int main()
 {
     int new_socket;
@@ -397,6 +505,12 @@ int main()
         }
 
         Client_node_t *cli = (Client_node_t *)malloc(sizeof(Client_node_t));
+        if (cli == NULL)
+        {
+            perror("malloc");
+            close(new_socket);
+            continue;
+        }
         cli->sock = new_socket;
         cli->connected_to = -1;
         cli->next = NULL;
@@ -404,13 +518,30 @@ int main()
         AddClient(cli);
 
         pthread_t tid;
-        pthread_create(&tid, NULL, HandleClient, (void *)cli);
-        pthread_detach(tid); // Detach thread to prevent memory leaks
+        if (pthread_create(&tid, NULL, HandleClient, (void *)cli) != 0)
+        {
+            perror("pthread_create");
+            RemoveClient(cli->sock);
+             close(cli->sock);
+            free(cli);
+            continue;
+        }
+        if (pthread_detach(tid) != 0)
+        {
+            perror("pthread_detach");
+            RemoveClient(cli->sock);
+            close(cli->sock);
+            free(cli);
+            continue;
+        }
     }
 
-    close(server_fd);
+  	close(server_fd);
+   	
+   
     FreeAllClients();
     printf("\nServer shut down.\n");
 
     return 0;
 }
+

@@ -1,14 +1,35 @@
+/*******************************************************************************
+ * Copyright(c) 2024, Volansys Technologies
+ *
+ * Description:
+ * @file client.c
+ *
+ * Author       - Sneh Shah
+ *
+ *******************************************************************************
+ *
+ * History
+ *
+ * Jul/01/2024, Sneh Shah, Created
+ *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include <errno.h>
 
 #define PORT 7777
 #define BUFFER_SIZE 1024
 #define NAME_LEN 32
-#define SERVER_IP "192.168.3.147"
+#define SERVER_IP "127.0.0.1"
+
+/**
+ * @brief Prints available commands for the client.
+ */
 
 void PrintGuide()
 {
@@ -18,6 +39,14 @@ void PrintGuide()
     printf("3. disconnect: Disconnect from the current client\n");
     printf("4. quit: Exit the chat application\n\n");
 }
+
+
+/**
+ * @brief Removes newline character from a string.
+ *
+ * @param arr The character array from which to remove newline.
+ * @param length The length of the character array.
+ */
 
 void RemoveNewLine(char *arr, int length)
 {
@@ -30,6 +59,14 @@ void RemoveNewLine(char *arr, int length)
         }
     }
 }
+
+
+/**
+ * @brief Thread function to handle sending messages to the server.
+ *
+ * @param sock Pointer to the socket descriptor.
+ * @return void* Returns NULL when the thread exits.
+ */
 
 void *SendMessageHandler(void *sock)
 {
@@ -52,6 +89,14 @@ void *SendMessageHandler(void *sock)
         bzero(buffer, BUFFER_SIZE);
     }
 }
+
+
+/**
+ * @brief Thread function to handle receiving messages from the server.
+ *
+ * @param sock Pointer to the socket descriptor.
+ * @return void* Returns NULL when the thread exits.
+ */
 
 void *ReceiveMessageHandler(void *sock)
 {
@@ -108,14 +153,21 @@ void *ReceiveMessageHandler(void *sock)
     pthread_exit(NULL);
 }
 
+/**
+ * @brief Main function where the client initializes, connects to the server,
+ *        and manages message sending/receiving.
+ *
+ * @return Returns 0 on successful execution, -1 on failure.
+ */
+
 int main()
 {
     int sock = 0;
     struct sockaddr_in serv_addr;
 
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
-        printf("\n Socket creation error \n");
+        perror("Socket creation error");
         return -1;
     }
 
@@ -124,13 +176,13 @@ int main()
 
     if (inet_pton(AF_INET, SERVER_IP, &serv_addr.sin_addr) <= 0)
     {
-        printf("\nInvalid address/ Address not supported \n");
+        perror("Invalid address/ Address not supported");
         return -1;
     }
 
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-        printf("\nConnection Failed \n");
+        perror("Connection Failed");
         return -1;
     }
 
@@ -140,7 +192,11 @@ int main()
     RemoveNewLine(name, strlen(name));
     if (strlen(name) > 0)
     {
-        send(sock, name, strlen(name), 0);
+        if (send(sock, name, strlen(name), 0) < 0)
+        {
+            perror("Send failed");
+            return -1;
+        }
     }
     else
     {
@@ -153,12 +209,12 @@ int main()
     pthread_t send_msg_thread, recv_msg_thread;
     if (pthread_create(&send_msg_thread, NULL, SendMessageHandler, &sock) != 0)
     {
-        printf("Failed to create send message thread\n");
+        perror("Failed to create send message thread");
         return -1;
     }
     if (pthread_create(&recv_msg_thread, NULL, ReceiveMessageHandler, &sock) != 0)
     {
-        printf("Failed to create receive message thread\n");
+        perror("Failed to create receive message thread");
         return -1;
     }
 
@@ -169,3 +225,4 @@ int main()
 
     return 0;
 }
+
