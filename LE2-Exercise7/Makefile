@@ -1,32 +1,22 @@
-# all:
-# 	@hostname -I | cat > temp.txt
+CC = gcc
+CFLAGS = -g -Wall -Wextra -pthread
+SERVERSRC = $(wildcard server/*.c)
+CLIENTSRC = $(wildcard client/*.c)
 
-SDIR = ./src
-ODIR = ./obj
-OUT = ./out
+# print:
+# 	@echo $(SERVERSRC)
+# 	@echo $(CLIENTSRC)
 
-CFILES = $(wildcard $(SDIR)/*.c)
-OFILES = $(patsubst $(SDIR)/%.c,$(ODIR)/%.o,$(CFILES))
-EXEFILES = $(patsubst $(SDIR)/%.c,$(OUT)/%,$(CFILES))
-TMPFILES = $(patsubst %.c,%,$(CFILES))
-CFLAGS = -g -pthread -Wall -Wextra 
+all: out out/server out/client
 
-all: $(ODIR) $(OUT) $(OFILES) $(EXEFILES)
+out:
+	mkdir -p out
 
-$(ODIR):
-	mkdir -p $(ODIR)
+out/server: $(SERVERSRC) inc/server.h inc/common.h
+	gcc $(CFLAGS) $^ -o $@
 
-$(OUT):
-	mkdir -p $(OUT)
+out/client: $(CLIENTSRC) inc/client.h inc/common.h
+	gcc $(CFLAGS) $^ -o $@
 
-$(ODIR)/%.o: $(SDIR)/%.c
-	gcc -c $< -o $@
-
-$(OUT)/%: $(ODIR)/%.o
-	gcc $(CFLAGS) $< -o $@
-	
 clean:
-	rm -rf $(ODIR) $(OUT)
-	@rm -f $(TMPFILES)
-	
-.PHONY: all clean
+	rm -rf out/

@@ -1,0 +1,8 @@
+digraph "/home/sneh/_Linux_Essential_2/LE2_Final_Exercises/final_modular_chat/temp/server" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_41e1742e44e2de38b3bc91f993fed282 [shape=box, label="server", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_41e1742e44e2de38b3bc91f993fed282.html"];
+  dir_bfccd401955b95cf8c75461437045ac0 [shape=box label="inc" URL="dir_bfccd401955b95cf8c75461437045ac0.html"];
+  dir_41e1742e44e2de38b3bc91f993fed282->dir_bfccd401955b95cf8c75461437045ac0 [headlabel="3", labeldistance=1.5 headhref="dir_000002_000001.html"];
+}
